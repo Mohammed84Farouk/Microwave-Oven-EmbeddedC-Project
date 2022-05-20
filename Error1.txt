@@ -1,1 +1,3 @@
-We are trying the error
+Functions to be done:
+Initialzing Keypad Port C Port E
+Getting The key
