@@ -1,4 +1,5 @@
-//the keypad is connected to the tiva board as follows :rows to (PE0->PE3) while the columns wires to (PC4->PC7) respectively.
+// The keypad is initializied by adding the rows to ports E0>>E3 in tiva C and the columns to ports C4>>C7
+// The Columns will be set to be digital Input while the Rows will be set to be digital Output
 
 #include "TM4C123GH6PM.h"
 #include <stdint.h>
@@ -9,19 +10,73 @@
 void enablePClock(int x){																									//enables clock to Port x/*************************/
 	SYSCTL->RCGCGPIO|=x;
 }
+void setDirection(int x , unsigned char PortName){
+	switch(PortName){
+		case 'R':
+		case 'r':
+			KEYPAD_ROW->DIR |= x;
+			break;
+		case 'C':
+		case 'c':
+			KEYPAD_COL->DIR &= ~x;
+		break;
+			
+	}
+}
+void setDigital(int x , unsigned char PortName){
+	switch(PortName){
+		case 'R':
+		case 'r':
+			KEYPAD_ROW->DEN |= x;
+			break;
+		case 'C':
+		case 'c':
+			KEYPAD_COL->DEN |= x;
+		break;
+			
+	}
+}
+void setPullUp(int x , unsigned char PortName)
+{
+	switch(PortName){
+		case 'R':
+		case 'r':
+			KEYPAD_ROW->PUR |= x;
+			break;
+		case 'C':
+		case 'c':
+			KEYPAD_COL->PUR |= x;
+		break;
+			
+	}
+}
+void setOpenDrain(int x , unsigned char PortName)
+{
+	switch(PortName){
+		case 'R':
+		case 'r':
+			KEYPAD_ROW->ODR |= x;
+			break;
+		case 'C':
+		case 'c':
+			KEYPAD_COL->ODR |= x;
+		break;
+			
+	}
+}
+
 
 /* this function initializes the ports connected to the keypad */
+// The R used in the Functions refer to Rows and the C refer to Columns
 void keypad_init(void) {
 			enablePClock(0x04);																						//enable clock to GPIOC
 			enablePClock(0x10);																						//enable clock to GPIOE							el mafroud d bta3t modather
-			//SYSCTL->RCGCGPIO |= 0x04; 																	/* enable clock to GPIOC */
-			//SYSCTL->RCGCGPIO |= 0x10; 																	/* enable clock to GPIOE */
-			KEYPAD_ROW->DIR |= 0x0F; 																			/* set row pins 3-0 as output */
-			KEYPAD_ROW->DEN |= 0x0F; 																			/* set row pins 3-0 as digital pins */
-			KEYPAD_ROW->ODR |= 0x0F; 																			/* set row pins 3-0 as open drain */
-			KEYPAD_COL->DIR &= ~0xF0; 																		/* set column pin 7-4 as input */
-			KEYPAD_COL->DEN |= 0xF0; 																			/* set column pin 7-4 as digital pins */
-			KEYPAD_COL->PUR |= 0xF0; 																			/* enable pull-ups for pin 7-4 */
+			setDirection(0x0F , 'R');																			// set row pins 3-0 as output 
+			setDigital(0x0F ,'R'); 																			// set row pins 3-0 as digital pins 
+			setOpenDrain(0x0F ,'R');																		// set row pins 3-0 as open drain 									
+			setDirection(0x0F , 'C');																		// set column pin 7-4 as input 
+			setDigital(0x0F ,'C');																			// set column pin 7-4 as digital
+			setPullUp(0xF0 , 'C');																			//set column pin 7-4 as PullUp
 }
 /* This is a non-blocking function to read the keypad. */
 /* If a key is pressed, it returns the key label in ASCII encoding. Otherwise, it
