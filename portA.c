@@ -14,17 +14,19 @@
 #define SYSCTL_RCGCGPIO_R       (*((volatile unsigned long *)0x400FE608))
 #define SYSCTL_PRGPIO_R         (*((volatile unsigned long *)0x400FEA08))
 #define PA0                     (*((volatile unsigned long *)0x40004004))
+#define PA1                     (*((volatile unsigned long *)0x40004008))
 #define PA0 					0x01
+#define PA1 					0x02
 
 void init_portA(){
 	SYSCTL_RCGCGPIO_R |= 0x01; // PortA clock enable
 	while ((SYSCTL_PRGPIO_R & 0x01)==0); //Delay
 	GPIO_PORTA_LOCK_R = 0x4C4F434B; // Unlock PortA Commit register
-	GPIO_PORTA_CR_R = 0x01;//enable control 
-	GPIO_PORTA_PUR_R |= 0x01;   	//Enable Pull Up SW on PA0
-	GPIO_PORTA_AFSEL_R &= ~0x01; // No alternate function
-	GPIO_PORTA_PCTL_R &= ~0x01 ; 	// Regular GPIO of PORTA
-	GPIO_PORTA_AMSEL_R &= ~0x01; // Disable analog function
-	GPIO_PORTA_DIR_R |= 0x00; // PA0 input
- 	GPIO_PORTA_DEN_R |= 0x01; // Enable Port A0  
+	GPIO_PORTA_CR_R = 0x03;//enable control 
+	GPIO_PORTA_PUR_R |= 0x03;   	//Enable Pull Up SW on PA0 PA1
+	GPIO_PORTA_AFSEL_R &= ~0x03; // No alternate function
+	GPIO_PORTA_PCTL_R &= ~0x03 ; 	// Regular GPIO of PORTA
+	GPIO_PORTA_AMSEL_R &= ~0x03; // Disable analog function
+	GPIO_PORTA_DIR_R |= 0x00; // PA0 PA1 input
+ 	GPIO_PORTA_DEN_R |= 0x03; // Enable Port A0 & A1  
 }

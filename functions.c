@@ -88,6 +88,9 @@ int set_time(int time){
 			state = start_cooking();
 		}
 	}
+	if (time == 0){
+		GPIO_PORTA_DATA_R = 0x02;			// PA1 = 1
+	}
 	return true;
 }
 
@@ -106,6 +109,6 @@ void special_time(){
 	{
 		lcd.print(Err)
 	}
-	sum = (min1:min2) * 60 + (sec1:sec2) 		// ex. 25:23 ----> 25 * 60 + 23
+	sum = (min1:min2) * 60 + (sec1:sec2) 			// ex. 25:23 ----> 25 * 60 + 23
 	return sum;
 }
