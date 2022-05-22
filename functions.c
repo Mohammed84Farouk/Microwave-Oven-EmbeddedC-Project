@@ -16,21 +16,17 @@ void SysTick_wait(unsigned long delay){
 
 void generic_delay(unsigned long time){
 	for (int i = 0; i < time; i++){
-	SysTick_wait(80000);          //delay 1ms if it operates on 80MHz
+	SysTick_wait(16000);          //delay 1ms if it operates on 16MHz
 	}
 }
 
-void get_weight(){
-	int W;
-	stdin W;
-	if (W < 1 || W > 9)
-	{	
-		return -1;
+unsigned char get_weight(){
+	do{
+		key=keypad_getkey();
+		delayMs(200);   					//wait for the debounce
 	}
-	elseif (W >= 1 && W <= 9)
-	{
-		return W; 
-	}
+	while(key==0);
+	return key;
 }
 
 bool ClosedDoor(){
@@ -54,11 +50,19 @@ int set_time(int time){
 	int state;
 	if (!Check()){
 			state = pause();
+			if (state == idle)
+			{
+				return = 0;
+			}
 	}
 	while(time--){
 		if (!Check())
 		{
 			state = pause();
+			if (state == idle)	
+			{
+				return = 0;
+			}
 		}
 		if (SW3)
 		{
@@ -70,7 +74,7 @@ int set_time(int time){
 
 void special_time(){
 	int min1 = 0, min2 = 0, sec1 = 0, sec2 = 0;
-	int sum;		            
+	int sum = 0;		            
 	lcd.print(Enter time in format of MM:SS);          // format (min1 min2:sec1 sec2)
 	for (int i = 0; i < 4; ++i)
 	{
