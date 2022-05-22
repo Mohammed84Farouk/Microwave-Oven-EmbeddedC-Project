@@ -1,13 +1,13 @@
-#include "Io.h"
+#include "portF.c"
 #include "tm4c123gh6pm.h"
-#include "Switch.c"
+#include "stdint.h"
+#include "portA.c"
 
 #define NVIC_ST_CTRL_R          (*((volatile unsigned long *)0xE000E010))
 #define NVIC_ST_RELOAD_R        (*((volatile unsigned long *)0xE000E014))
 #define NVIC_ST_CURRENT_R       (*((volatile unsigned long *)0xE000E018))
 
-char Err;
-bool SW3, SW2, SW1;
+char Err, SW3, ClosedDoor;
 
 void SysTick_wait(unsigned long delay){
 	NVIC_ST_CTRL_R = 0x00;
@@ -16,12 +16,11 @@ void SysTick_wait(unsigned long delay){
 	NVIC_ST_CTRL_R = 0x05;
 	while ((NVIC_ST_CTRL_R & 0x00010000) == 0){
 	}
-	
 }
 
 void generic_delay(unsigned long time){
 	for (int i = 0; i < time; i++){
-	SysTick_wait(16000);          //delay 1ms if it operates on 16MHz
+	SysTick_wait(16000);         			 //delay 1ms if it operates on 16MHz
 	}
 }
 
@@ -34,16 +33,30 @@ unsigned char get_weight(){
 	return key;
 }
 
-bool ClosedDoor(){
-	if (SW3)
-	{
-		return true;
-	}
-	else
-		return false;
+// initialize SW3 
+void init_SW3(){
+	init_portA();
+	if ((GPIO_PORTA_DATA_R & 0x11) == 0x01){
+		SW3 = 1;	
+	} 
+	else { 
+		SW3 = 0;
+	}	
 }
 
-bool Check(){
+char ClosedDoor(){
+	init_SW3();
+	if (SW3){
+		ClosedDoor = 1;
+		return true;
+	}
+	else{
+		ClosedDoor = 0;
+		return false;
+	}
+}
+
+char Check(){
 	if (SW2 && ClosedDoor)
 	{
 		return true;
@@ -61,6 +74,7 @@ int set_time(int time){
 			}
 	}
 	while(time--){
+		delayMs(200);
 		if (!Check())
 		{
 			state = pause();
