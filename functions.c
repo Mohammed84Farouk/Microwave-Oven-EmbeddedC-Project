@@ -1,7 +1,7 @@
-#include "portF.c"
+#include "portF.h"
 #include "tm4c123gh6pm.h"
 #include "stdint.h"
-#include "portA.c"
+#include "buzzer.h"
 
 #define NVIC_ST_CTRL_R          (*((volatile unsigned long *)0xE000E010))
 #define NVIC_ST_RELOAD_R        (*((volatile unsigned long *)0xE000E014))
@@ -34,14 +34,8 @@ unsigned char get_weight(){
 }
 
 // initialize SW3 
-void init_SW3(){
-	init_portA();
-	if ((GPIO_PORTA_DATA_R & 0x11) == 0x01){
-		SW3 = 1;	
-	} 
-	else { 
-		SW3 = 0;
-	}	
+unsigned char SW3_input(void){                                                                                    /***/
+    return GPIO_PORTA_DATA_R&0x08;
 }
 
 char ClosedDoor(){
@@ -64,34 +58,32 @@ char Check(){
 	else 
 		return false;
 }
-int set_time(int time){
-	int state;
-	if (!Check()){
-			state = pause();
-			if (state == idle)
-			{
-				return = 0;
-			}
-	}
-	while(time--){
-		delayMs(200);
-		if (!Check())
-		{
-			state = pause();
-			if (state == idle)	
-			{
-				return = 0;
-			}
-		}
-		if (SW3)
-		{
-			state = start_cooking();
-		}
-	}
-	if (time == 0){
-		GPIO_PORTA_DATA_R = 0x02;			// PA1 = 1
-	}
-	return true;
+int set_timer(int time){
+    int i, m, s, flag = 0;
+    unsigned char mins, secs, minutes[2], seconds[2];
+    for(i=time; i>=0; i--){
+        LCD_command(1);
+        lcd_string(timer);
+        m = i/60;
+        s = i%60;
+        if (m>9) lcd_data((unsigned char)('0' + (m/10)));
+        else lcd_data('0');
+        lcd_data((unsigned char)('0' + (m%10)));
+        lcd_data(':');
+        if (s>9) lcd_data((unsigned char)('0' + (s/10)));
+        else lcd_data('0');
+        lcd_data((unsigned char)('0' + (s%10)));
+        delayMs(1000);
+        sw=SW3_input();                    //make it SW3 in the future
+        if(sw!=0x10){
+           	LCD_command(1);
+            lcd_string("Pausing");
+            while(sw!=0x01) sw=SW1_input();
+        }
+    }
+    //timer is done and is now 00:00
+    LCD_command(1);
+    return 0;
 }
 
 void special_time(){
