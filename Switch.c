@@ -12,12 +12,8 @@
 #define GPIO_LOCK_KEY           0x4C4F434B  // Unlocks the GPIO_CR register    ask Farouk
 #define SYSCTL_RCGCGPIO_R       (*((volatile unsigned long *)0x400FE608))
 #define SYSCTL_PRGPIO_R         (*((volatile unsigned long *)0x400FEA08))
-
+#define PA0                     (*((volatile unsigned long *)0x40004004))
 #define PA0 					0x01
-
-#define PF123_mask              0x0E
-#define PF04_mask               0x11
-#define PF_mask                 0x20
 
 void init_portA(){
 	SYSCTL_RCGCGPIO_R |= 0x01; // PortA clock enable
