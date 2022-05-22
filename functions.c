@@ -1,5 +1,10 @@
 #include "Io.h"
 #include "tm4c123gh6pm.h"
+#include "Switch.c"
+
+#define NVIC_ST_CTRL_R          (*((volatile unsigned long *)0xE000E010))
+#define NVIC_ST_RELOAD_R        (*((volatile unsigned long *)0xE000E014))
+#define NVIC_ST_CURRENT_R       (*((volatile unsigned long *)0xE000E018))
 
 char Err;
 bool SW3, SW2, SW1;
