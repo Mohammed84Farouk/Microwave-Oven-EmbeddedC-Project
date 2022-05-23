@@ -1,0 +1,17 @@
+#define dataport 'B'
+#define ctrlport 'A'
+#define RS 5
+#define RW 6
+#define E 7
+#define clr 0x01
+#define lcdON_cursorON 0x0F
+#define displayON_cursorBlink 0x0E
+#define displayON_cursorOFF 0x0C
+#define displayOFF_cursorOFF 0x08
+#define decrement 0x04
+#define increment 0x06
+#define shiftRight 0x07
+#define shiftLeft 0x05
+#define beg1 0x80
+#define beg2 0xC0
+#define entryMode 0x06
