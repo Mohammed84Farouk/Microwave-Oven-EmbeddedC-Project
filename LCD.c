@@ -1,66 +1,62 @@
-#include "TM4C123GH6PM.h"
-#include <stdint.h>
+#include "lcdDef.h"
+#include "Io.h"
 
-#define LCD_DATA GPIOB
-#define LCD_CTRL GPIOA
-#define RS 0x20 /* PORTA BIT5 mask */
-#define RW 0x40 /* PORTA BIT6 mask */
-#define EN 0x80 /* PORTA BIT7 mask */
-void LCD_command(unsigned char cmnd);
+void sendCmd(unsigned char cmd);
 
-
-void LCD_init(void)
+void lcdInit ()
 {
-SYSCTL->RCGCGPIO |= 0x01; /* enable clock to GPIOA */
-SYSCTL->RCGCGPIO |= 0x02; /* enable clock to GPIOB */
-LCD_CTRL->DIR |= 0xE0; /* set PORTA pin 7-5 as output for control */
-LCD_CTRL->DEN |= 0xE0; /* set PORTA pin 7-5 as digital pins */
-LCD_DATA->DIR = 0xFF; /* set all PORTB pins as output for data */
-LCD_DATA->DEN = 0xFF; /* set all PORTB pins as digital pins */
-delayMs(20); /* initialization sequence */
-LCD_command(0x30);
-delayMs(5);
-LCD_command(0x30);
-delayUs(100);
-LCD_command(0x30);
-LCD_command(0x38); /* set 8-bit data, 2-line, 5x7 font */
-LCD_command(0x06); /* move cursor right */
-LCD_command(0x01); /* clear screen, move cursor to home */
-LCD_command(0x0F); /* turn on display, cursor blinking */
+	setportDIR(dataport,0xFF);
+	setpinDIR(ctrlport , E , 1);
+	setpinDIR(ctrlport , RS , 1);
+	setpinDIR(ctrlport , RW , 1);
+	writepin(ctrlport, RW , 0);
+	sendCmd(0x38); // work in 8 bit mode
+	delay_ms(1);
+	sendCmd(displayON_cursorBlink);
+	delay_ms(1);
+	sendCmd(clr);
+	delay_ms(10);
+	sendCmd(entryMode);
 }
-
-
-
-
-
-
-void LCD_command(unsigned char cmnd)
+static void pulse (void)
 {
-LCD_CTRL->DATA = 0; /* RS = 0, R/W = 0 */
-LCD_DATA->DATA = cmnd;
-LCD_CTRL->DATA = EN; /* pulse E */
-delayUs(0);
-LCD_CTRL->DATA = 0;
-if (cmnd < 4)
-delayMs(2); /* command 1 and 2 needs up to 1.64ms */
-else
-delayUs(40); /* all others 40 us */
+	writepin(ctrlport , E , 1);
+	delay_ms(2);
+	writepin(ctrlport , E , 0);
+	delay_ms(2);
 }
-void lcd_data(unsigned char data)
+void sendCmd(unsigned char cmd)
 {
-LCD_CTRL->DATA = RS; /* RS = 1, R/W = 0 */
-LCD_DATA->DATA = data;
-LCD_CTRL->DATA = EN | RS; /* pulse E */
-delayUs(0);
-LCD_CTRL->DATA = 0;
-delayUs(40);
+	writeport(dataport , cmd);
+	writepin(ctrlport , RS , 0);
+	pulse();
+	delay_ms(1);
 }
-void lcd_string(unsigned char *data)
+void sendchr(unsigned char chr)
 {
-LCD_CTRL->DATA = RS; /* RS = 1, R/W = 0 */
-LCD_DATA->DATA = *data;
-LCD_CTRL->DATA = EN | RS; /* pulse E */
-delayUs(0);
-LCD_CTRL->DATA = 0;
-delayUs(40);
+	writeport(dataport , chr);
+	writepin(ctrlport , RS , 1);
+	pulse();
+	delay_ms(1);
+}
+void sendstring( char* data)
+{
+	while((*data) != '\0'){
+		sendchr(*data);
+		data++;
+	}
+}
+void clear()
+{
+	sendCmd(clr);
+	delay_ms(10);
+}
+void moveCursor(unsigned char row , unsigned char col)
+{
+	char pos = 0;
+	if(row == 1) pos = 0x80 + col - 1 ;
+	else if (row == 2) pos = 0xC0 + col - 1;
+	else pos = 0x80;
+	sendCmd(pos);
+	delay_ms(1);
 }
