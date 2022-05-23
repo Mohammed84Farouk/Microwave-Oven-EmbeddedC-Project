@@ -1,3 +1,4 @@
+/*
 void portInit ( unsigned char port );
 void setpinDIR ( unsigned char port , unsigned char pin , unsigned char dir);
 void setportDIR (unsigned char port , unsigned char dir);
@@ -15,7 +16,3 @@ void ledOFF (unsigned char port , unsigned char pin);
 
 void buttonInit (unsigned char port , unsigned char pin);
 unsigned char buttonRead (unsigned char port , unsigned char pin);
-
-void systickInit(void);
-void delay_ms( unsigned int n);
-void delay_us(unsigned int n);

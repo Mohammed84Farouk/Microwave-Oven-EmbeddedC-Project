@@ -1,14 +1,34 @@
+/*
 #include "tm4c123gh6pm.h"
-#include "es.h"
 
+
+unsigned char setbit ( unsigned char reg ,unsigned char bit)
+{
+	reg |= (1 << bit);
+	return reg;
+}
+unsigned char clearbit (unsigned char reg ,unsigned char bit) 
+{
+	reg &= (~(1<<bit)) ;
+	return reg;
+}
+unsigned char togglebit (unsigned char reg ,unsigned char bit)
+{
+	reg ^= (1<<bit); 
+	return reg;
+}
+unsigned char readbit (unsigned char reg ,unsigned char bit)
+{
+	return ((reg & (1<<bit))>>bit);
+}
 
 void portInit ( unsigned char port )
 {
 	switch(port)
- 	{
+	{
 		case 'A' :
 	  case 'a' : 
-			setbit(SYSCTL_RCGCGPIO_R , 0); // unlock clock 
+			SYSCTL_RCGCGPIO_R = setbit(SYSCTL_RCGCGPIO_R , 0); // unlock clock 
 		  while(readbit(SYSCTL_PRGPIO_R , 0) == 0); //delay
 		  GPIO_PORTA_LOCK_R = 0x4C4F434B; //unlock 
 		  GPIO_PORTA_DEN_R = 0xFF; //digital enable
@@ -19,7 +39,7 @@ void portInit ( unsigned char port )
 		break;
 		case 'B' :
 	  case 'b' : 
-			setbit(SYSCTL_RCGCGPIO_R , 1); // unlock clock 
+			SYSCTL_RCGCGPIO_R = setbit(SYSCTL_RCGCGPIO_R , 1); // unlock clock 
 		  while(readbit(SYSCTL_PRGPIO_R , 1) == 0); //delay
 		  GPIO_PORTB_LOCK_R = 0x4C4F434B; //unlock 
 		  GPIO_PORTB_DEN_R = 0xFF; //digital enable
@@ -30,22 +50,18 @@ void portInit ( unsigned char port )
 		break;
 		case 'C' :
 	  case 'c' : 
-			setbit(SYSCTL_RCGCGPIO_R , 2); // unlock clock 
+			SYSCTL_RCGCGPIO_R = setbit(SYSCTL_RCGCGPIO_R , 2); // unlock clock 
 		  while(readbit(SYSCTL_PRGPIO_R , 2) == 0); //delay
 		  GPIO_PORTC_LOCK_R = 0x4C4F434B; //unlock 
-		  GPIO_PORTC_DEN_R |= 0xF0 ;
-			GPIO_PORTC_AFSEL_R &= ~(0xF0);
-			GPIO_PORTC_CR_R |= 0xF0;
-			GPIO_PORTC_PCTL_R &= 0x0F;
-			/* GPIO_PORTC_DEN_R = 0xFF; //digital enable
+		  GPIO_PORTC_DEN_R = 0xFF; //digital enable
 		  GPIO_PORTC_AMSEL_R = 0x00; // analog disable
 		  GPIO_PORTC_AFSEL_R = 0x00; // alt functions disable
 		  GPIO_PORTC_CR_R = 0xFF; // commit control
-			GPIO_PORTC_PCTL_R = 0x00; // gpio */
+			GPIO_PORTC_PCTL_R = 0x00; // gpio
 		break;
 		case 'D' :
 	  case 'd' : 
-			setbit(SYSCTL_RCGCGPIO_R , 3); // unlock clock 
+			SYSCTL_RCGCGPIO_R = setbit(SYSCTL_RCGCGPIO_R , 3); // unlock clock 
 		  while(readbit(SYSCTL_PRGPIO_R , 3) == 0); //delay
 		  GPIO_PORTD_LOCK_R = 0x4C4F434B; //unlock 
 		  GPIO_PORTD_DEN_R = 0xFF; //digital enable
@@ -56,7 +72,7 @@ void portInit ( unsigned char port )
 		break;
 		case 'E' :
 	  case 'e' : 
-			setbit(SYSCTL_RCGCGPIO_R , 4); // unlock clock 
+			SYSCTL_RCGCGPIO_R = setbit(SYSCTL_RCGCGPIO_R , 4); // unlock clock 
 		  while(readbit(SYSCTL_PRGPIO_R , 4) == 0); //delay
 		  GPIO_PORTE_LOCK_R = 0x4C4F434B; //unlock 
 		  GPIO_PORTE_DEN_R = 0xFF; //digital enable
@@ -67,7 +83,7 @@ void portInit ( unsigned char port )
 		break;
 		case 'F' :
 	  case 'f' : 
-			setbit(SYSCTL_RCGCGPIO_R , 5); // unlock clock 
+			SYSCTL_RCGCGPIO_R = setbit(SYSCTL_RCGCGPIO_R , 5); // unlock clock 
 		  while(readbit(SYSCTL_PRGPIO_R , 5) == 0); //delay
 		  GPIO_PORTF_LOCK_R = 0x4C4F434B; //unlock
 		  GPIO_PORTF_CR_R = 0xFF; // commit control
@@ -75,8 +91,6 @@ void portInit ( unsigned char port )
 		  GPIO_PORTF_AMSEL_R = 0x00; // analog disable
 		  GPIO_PORTF_AFSEL_R = 0x00; // alt functions disable
 			GPIO_PORTF_PCTL_R = 0x00; // gpio
-			GPIO_PORTF_PUR_R |=0x11; 
-			GPIO_PORTF_DIR_R |=0x0E; 
 		break;
 	}
 }
@@ -87,33 +101,33 @@ void setpinDIR ( unsigned char port , unsigned char pin , unsigned char dir)
 	{
 		case 'A' :
 	  case 'a' :
-			if(dir == 1) setbit(GPIO_PORTA_DIR_R , pin);
-		  else if (dir == 0) clearbit(GPIO_PORTA_DIR_R , pin);
+			if(dir == 1) GPIO_PORTA_DIR_R = setbit(GPIO_PORTA_DIR_R , pin);
+		  else if (dir == 0) GPIO_PORTA_DIR_R = clearbit(GPIO_PORTA_DIR_R , pin);
 		break;
 		case 'B' :
 	  case 'b' :
-			if(dir == 1) setbit(GPIO_PORTB_DIR_R , pin);
-		  else if (dir == 0) clearbit(GPIO_PORTB_DIR_R , pin);
+			if(dir == 1) GPIO_PORTB_DIR_R = setbit(GPIO_PORTB_DIR_R , pin);
+		  else if (dir == 0) GPIO_PORTB_DIR_R = clearbit(GPIO_PORTB_DIR_R , pin);
 		break;
 		case 'C' :
 	  case 'c' :
-			if(dir == 1) setbit(GPIO_PORTC_DIR_R , pin);
-		  else if (dir == 0) clearbit(GPIO_PORTC_DIR_R , pin);
+			if(dir == 1) GPIO_PORTC_DIR_R = setbit(GPIO_PORTC_DIR_R , pin);
+		  else if (dir == 0) GPIO_PORTC_DIR_R = clearbit(GPIO_PORTC_DIR_R , pin);
 		break;
 		case 'D' :
 	  case 'd' :
-			if(dir == 1) setbit(GPIO_PORTD_DIR_R , pin);
-		  else if (dir == 0) clearbit(GPIO_PORTD_DIR_R , pin);
+			if(dir == 1) GPIO_PORTD_DIR_R = setbit(GPIO_PORTD_DIR_R , pin);
+		  else if (dir == 0) GPIO_PORTD_DIR_R = clearbit(GPIO_PORTD_DIR_R , pin);
 		break;
 		case 'E' :
 	  case 'e' :
-			if(dir == 1) setbit(GPIO_PORTE_DIR_R , pin);
-		  else if (dir == 0) clearbit(GPIO_PORTE_DIR_R , pin);
+			if(dir == 1) GPIO_PORTE_DIR_R = setbit(GPIO_PORTE_DIR_R , pin);
+		  else if (dir == 0) GPIO_PORTE_DIR_R = clearbit(GPIO_PORTE_DIR_R , pin);
 		break;
 		case 'F' :
 	  case 'f' :
-			if(dir == 1) setbit(GPIO_PORTF_DIR_R , pin);
-		  else if (dir == 0) clearbit(GPIO_PORTF_DIR_R , pin);
+			if(dir == 1) GPIO_PORTF_DIR_R = setbit(GPIO_PORTF_DIR_R , pin);
+		  else if (dir == 0) GPIO_PORTF_DIR_R = clearbit(GPIO_PORTF_DIR_R , pin);
 		break;
 	}
 }
@@ -153,33 +167,33 @@ void writepin ( unsigned char port , unsigned char pin , unsigned char data)
 	{
 		case 'A' :
 	  case 'a' :
-			if(data == 1) setbit(GPIO_PORTA_DATA_R , pin);
-		  else if (data == 0) clearbit(GPIO_PORTA_DATA_R , pin);
+			if(data == 1) GPIO_PORTA_DATA_R = setbit(GPIO_PORTA_DATA_R , pin);
+		  else if (data == 0) GPIO_PORTA_DATA_R = clearbit(GPIO_PORTA_DATA_R , pin);
 		break;
 		case 'B' :
 	  case 'b' :
-			if(data == 1) setbit(GPIO_PORTB_DATA_R , pin);
-		  else if (data == 0) clearbit(GPIO_PORTB_DATA_R , pin);
+			if(data == 1) GPIO_PORTB_DATA_R = setbit(GPIO_PORTB_DATA_R , pin);
+		  else if (data == 0) GPIO_PORTB_DATA_R = clearbit(GPIO_PORTB_DATA_R , pin);
 		break;
 		case 'C' :
 	  case 'c' :
-			if(data == 1) setbit(GPIO_PORTC_DATA_R, pin);
-		  else if (data == 0) clearbit(GPIO_PORTC_DATA_R , pin);
+			if(data == 1) GPIO_PORTC_DATA_R = setbit(GPIO_PORTC_DATA_R, pin);
+		  else if (data == 0) GPIO_PORTC_DATA_R = clearbit(GPIO_PORTC_DATA_R , pin);
 		break;
 		case 'D' :
 	  case 'd' :
-			if(data == 1) setbit(GPIO_PORTD_DATA_R , pin);
-		  else if (data == 0) clearbit(GPIO_PORTD_DATA_R , pin);
+			if(data == 1) GPIO_PORTD_DATA_R = setbit(GPIO_PORTD_DATA_R , pin);
+		  else if (data == 0) GPIO_PORTD_DATA_R = clearbit(GPIO_PORTD_DATA_R , pin);
 		break;
 		case 'E' :
 	  case 'e' :
-			if(data == 1) setbit(GPIO_PORTE_DATA_R , pin);
-		  else if (data == 0) clearbit(GPIO_PORTE_DATA_R , pin);
+			if(data == 1) GPIO_PORTE_DATA_R = setbit(GPIO_PORTE_DATA_R , pin);
+		  else if (data == 0) GPIO_PORTE_DATA_R = clearbit(GPIO_PORTE_DATA_R , pin);
 		break;
 		case 'F' :
 	  case 'f' :
-			if(data == 1) setbit(GPIO_PORTF_DATA_R , pin);
-		  else if (data == 0) clearbit(GPIO_PORTF_DATA_R , pin);
+			if(data == 1) GPIO_PORTF_DATA_R = setbit(GPIO_PORTF_DATA_R , pin);
+		  else if (data == 0) GPIO_PORTF_DATA_R = clearbit(GPIO_PORTF_DATA_R , pin);
 		break;
 	}
 }
@@ -280,27 +294,27 @@ void pullup_enable (unsigned char port , unsigned char pin)
 	{
 		case 'A' :
 		case 'a' :
-			setbit(GPIO_PORTA_PUR_R , pin);
+			GPIO_PORTA_PUR_R = setbit(GPIO_PORTA_PUR_R , pin);
 		break;
 		case 'B' :
 		case 'b' :
-			setbit(GPIO_PORTB_PUR_R , pin);
+			GPIO_PORTB_PUR_R = setbit(GPIO_PORTB_PUR_R , pin);
 		break;
 		case 'C' :
 		case 'c' :
-			setbit(GPIO_PORTC_PUR_R , pin);
+			GPIO_PORTC_PUR_R = setbit(GPIO_PORTC_PUR_R , pin);
 		break;
 		case 'D' :
 		case 'd' :
-			setbit(GPIO_PORTD_PUR_R , pin);
+			GPIO_PORTD_PUR_R = setbit(GPIO_PORTD_PUR_R , pin);
 		break;
 		case 'E' :
 		case 'e' :
-			setbit(GPIO_PORTE_PUR_R , pin);
+			GPIO_PORTE_PUR_R = setbit(GPIO_PORTE_PUR_R , pin);
 		break;
 		case 'F' :
 		case 'f' :
-			setbit(GPIO_PORTF_PUR_R , pin);
+			GPIO_PORTF_PUR_R = setbit(GPIO_PORTF_PUR_R , pin);
 		break;
 	}
 }
@@ -397,28 +411,4 @@ unsigned char buttonRead (unsigned char port , unsigned char pin)
 {
 	return readpin(port , pin);
 }
-void systickInit(void)
-{
-	NVIC_ST_CTRL_R = 0x00;
-	NVIC_ST_RELOAD_R = 0x00FFFFFF;
-	NVIC_ST_CURRENT_R = 0x00;
-	NVIC_ST_CTRL_R = 0x05;
-}
-void delay_ms( unsigned int n)
-{
-	unsigned int i ;
-	systickInit();
-	NVIC_ST_RELOAD_R = 80000 - 1;
-	NVIC_ST_CURRENT_R = 0x00;
-	for(i=0 ; i < n ; i++)
-	while ( readbit(NVIC_ST_CTRL_R ,16) == 0);
-}
-void delay_us( unsigned int n)
-{
-	unsigned int i ;
-	systickInit();
-	NVIC_ST_RELOAD_R = 80 - 1;
-	NVIC_ST_CURRENT_R = 0x00;
-	for(i=0 ; i < n ; i++)
-	while ( readbit(NVIC_ST_CTRL_R ,16) == 0);
-}
+*/
