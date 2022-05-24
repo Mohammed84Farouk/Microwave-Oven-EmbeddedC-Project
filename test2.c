@@ -6,23 +6,34 @@
 #include "keypad.h"
 #include "buzzer.h"
 
-unsigned char sw1, sw2, sw3, w;
+unsigned char sw1, sw2, sw3, w, tt[4], value;
 char idle[]="Choose from A-D", clearing[]="Clearing...", ChickW[]="Chicken Weight? ", BeefW[]="Beef Weight? ", err[]="Err", timer[]="Timer: ", popC[]="PopCorn";																												/**********************/
-uint8_t key;      //to recieve the returned character
-int state;
-unsigned char key;
+uint8_t key;      								//to recieve the returned character
+int state, m1, m0, s1, s0, temp;
 
 void delayMs(uint32_t n) {				/* delay n milliseconds (16 MHz CPU clock) */
-		uint32_t i, j;
-		for(i = 0 ; i < n; i++)
-			for(j = 0; j < 3180; j++){} /* do nothing for 1 ms */
-}
-void delayUs(uint32_t n){		/* delay n microseconds (16 MHz CPU clock) */
 	uint32_t i, j;
 	for(i = 0 ; i < n; i++)
-		for(j = 0; j < 3; j++) {} /* do nothing for 1 us */
+		for(j = 0; j < 3180; j++){} /* do nothing for 1 ms */
 }
-void error();
+void delayUs(uint32_t n){					/* delay n microseconds (16 MHz CPU clock) */
+	uint32_t i, j;
+	for(i = 0 ; i < n; i++)
+		for(j = 0; j < 3; j++) {} 	/* do nothing for 1 us */
+}
+void error(void){
+    clear();							//clear the screen
+    moveCursor(1, 1);  				//lcd cursor location:first location in the first row
+    delayMs(500);
+    GPIO_PORTF_DATA_R = 0x02;    //it turns on the red led. 
+    delayMs(500);             
+    GPIO_PORTF_DATA_R = 0x00;    //it turns off the red led. 
+    delayMs(500);
+    sendstring(err);
+    delayMs(1000);
+    clear();
+}
+
 unsigned char get_weight(){
 	do{
 		key=keypad_getkey();
@@ -31,16 +42,14 @@ unsigned char get_weight(){
 	return key;
 }
 unsigned char SW1_input(void){																					/***********************/
-		return GPIO_PORTF_DATA_R&0x10;
+	return GPIO_PORTF_DATA_R&0x10;
 }
 unsigned char SW2_input(void){																					/***********************/
-		return GPIO_PORTF_DATA_R&0x01;
+	return GPIO_PORTF_DATA_R&0x01;
 }
-
 unsigned char SW3_input(void){																					/***********************/
-		return GPIO_PORTA_DATA_R&0x08;
+	return GPIO_PORTA_DATA_R&0x08;
 }
-
 int set_timer(int time){
 	int i, m, s, flag = 0;
 	unsigned char mins, secs, minutes[2], seconds[2];
@@ -68,11 +77,6 @@ int set_timer(int time){
 	sendCmd(1);
 	return 0;
 }
-
-
-
-
-
 int main(){
 	keypad_init();
 	portInit(ctrlport);
@@ -161,19 +165,3 @@ int main(){
 	}
 	return 0;
 }
-void error(void)
-{
-
-	     sendCmd(0x01);						//clear the screen
-	     moveCursor(1, 1);  			//lcd cursor location:first location in the first row
-       delayMs(500);
-	     GPIO_PORTF_DATA_R = 0x02;    //it turns on the red led. 
-       delayMs(500);             
-       GPIO_PORTF_DATA_R = 0x00;    //it turns off the red led. 
-       delayMs(500);
-       sendstring(err);
-       delayMs(1000);
-       sendCmd(0x01);
-        
-}
-
