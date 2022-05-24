@@ -81,42 +81,26 @@ int main()
 	lcdInit();
 	portInit('F');
 	PORTA_Init();
-	
 	Idle:
-	sw3=0x08;
-	delayMs(3000);
-	while(1)
-	{
-		sw3 = SW3_input();
-		if(!sw3)
-		{
-			GPIO_PORTA_DATA_R = 0x04;    //Turn on Blue LED 	
-		}
-		else
-		{
-			GPIO_PORTA_DATA_R = 0x00;   //Turn  off LED
-		}
-	}
-	
+	//sw3=SW3_input();
 	sendstring("enter a leter");
 	delayMs(2000);
 	sendCmd(1);
-	while (1)
-	{
+	while (1){
 		do{                          	//to be sure that the user really entered a key.
-					sw1=SW1_input();																								/*******************use SW1 for clearing using keypad****************/
-					sw2=SW2_input();																								/*******************use SW2 for clearing using keypad****************/
-					if(sw1!=0x10||sw2!=0x01){																									/*******************use SW1 or SW2 for clearing using keypad****************/
-							sendCmd(1);
-							sendstring(clearing);
-							delayMs(1500);
-							sendCmd(1);
-							sendCmd(0x80);
-					}
-					key= keypad_getkey();
-					delayMs(200);   					//wait for the debounce
-					
-			}while(key==0);
+			sw1=SW1_input();																								/*******************use SW1 for clearing using keypad****************/
+			sw2=SW2_input();																								/*******************use SW1 for clearing using keypad****************/
+			if(sw1!=0x10||sw2!=0x01){																									/*******************use SW1 for clearing using keypad****************/
+				sendCmd(1);
+				sendstring(clearing);
+				delayMs(1500);
+				sendCmd(1);
+				sendCmd(0x80);
+			}
+            key= keypad_getkey();
+			delayMs(200);   					//wait for the debounce		
+		}while(key==0);
+
 			switch(key){
               case 'A':	{
 									sendstring(popC);

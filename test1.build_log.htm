@@ -3,8 +3,8 @@
 <pre>
 <h1>µVision Build Log</h1>
 <h2>Project:</h2>
-C:\Users\Dell\Downloads\the working one\test1.uvproj
-Project File Date:  05/23/2022
+C:\Users\Dell\Desktop\for clone\Microwave-Oven-EmbeddedC-Project\test1.uvproj
+Project File Date:  05/24/2022
 
 <h2>Output:</h2>
 Build target 'Target 1'
@@ -33,18 +33,57 @@ test2.c(46): warning:  #177-D: variable "minutes" was declared but never referen
         unsigned char mins, secs, minutes[2], seconds[2];
 test2.c(46): warning:  #177-D: variable "seconds" was declared but never referenced
         unsigned char mins, secs, minutes[2], seconds[2];
-test2.c(101): warning:  #111-D: statement is unreachable
-        sendstring("enter a leter");
-test2.c(179): warning:  #111-D: statement is unreachable
+test2.c(163): warning:  #111-D: statement is unreachable
         return 0;
-test2.c: 14 warnings, 0 errors
+test2.c: 13 warnings, 0 errors
+compiling Io.c...
+es.h(4): warning:  #1-D: last line of file ends without a newline
+  #define  readbit(reg,bit) (reg&(1<<bit))>>bit
+Io.c(223): warning:  #111-D: statement is unreachable
+                break;
+Io.c(227): warning:  #111-D: statement is unreachable
+                break;
+Io.c(231): warning:  #111-D: statement is unreachable
+                break;
+Io.c(235): warning:  #111-D: statement is unreachable
+                break;
+Io.c(239): warning:  #111-D: statement is unreachable
+                break;
+Io.c(243): warning:  #111-D: statement is unreachable
+                break;
+Io.c(245): warning:  #940-D: missing return statement at end of non-void function "readpin"
+  }
+Io.c(254): warning:  #111-D: statement is unreachable
+                break;
+Io.c(258): warning:  #111-D: statement is unreachable
+                break;
+Io.c(262): warning:  #111-D: statement is unreachable
+                break;
+Io.c(266): warning:  #111-D: statement is unreachable
+                break;
+Io.c(270): warning:  #111-D: statement is unreachable
+                break;
+Io.c(274): warning:  #111-D: statement is unreachable
+                break;
+Io.c(276): warning:  #940-D: missing return statement at end of non-void function "readport"
+  }
+Io.c: 15 warnings, 0 errors
+compiling LCD.c...
+compiling keypad.c...
+es.h(4): warning:  #1-D: last line of file ends without a newline
+  #define  readbit(reg,bit) (reg&(1<<bit))>>bit
+keypad.c(52): warning:  #223-D: function "delayUs" declared implicitly
+                delayUs(2);                                                                                                                                                                                             /* wait for signal to settle */
+keypad.c(78): warning:  #1-D: last line of file ends without a newline
+  }
+keypad.c: 3 warnings, 0 errors
+compiling buzzer.c...
+buzzer.c(19): warning:  #1295-D: Deprecated declaration ClosedDoor - give arg types
+  int ClosedDoor();
+buzzer.c: 1 warning, 0 errors
 linking...
-Program Size: Code=4496 RO-data=668 RW-data=88 ZI-data=512  
-".\test1.axf" - 0 Error(s), 14 Warning(s).
-Load "C:\\Users\\Dell\\Downloads\\the working one\\test1.axf" 
-Connecting: Mode=JTAG, Speed=1000000Hz
-Connection failed!, error code=&d
-Error: Flash Download failed  -  Target DLL has been cancelled
+Program Size: Code=4948 RO-data=668 RW-data=88 ZI-data=512  
+".\test1.axf" - 0 Error(s), 32 Warning(s).
 </pre>
 </body>
 </html>

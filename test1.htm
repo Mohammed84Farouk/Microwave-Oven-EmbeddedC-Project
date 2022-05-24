@@ -3,11 +3,11 @@
 <title>Static Call Graph - [.\test1.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\test1.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Mon May 23 06:39:11 2022
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Tue May 24 22:39:54 2022
 <BR><P>
-<H3>Maximum Stack Usage =         32 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =         64 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-main &rArr; lcdInit &rArr; sendCmd &rArr; pulse &rArr; writepin
+main &rArr; set_timer &rArr; sendstring &rArr; sendchr &rArr; pulse &rArr; writepin
 <P>
 <H3>
 Mutually Recursive functions
@@ -1109,48 +1109,69 @@ Global Symbols
 <LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_weight
 </UL>
 
-<P><STRONG><a name="[9a]"></a>delayUs</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, test2.o(.text), UNUSED)
+<P><STRONG><a name="[9a]"></a>delayUs</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, test2.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;keypad_getkey
 </UL>
 
-<P><STRONG><a name="[7b]"></a>get_weight</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, test2.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;keypad_getkey
+<P><STRONG><a name="[7b]"></a>get_weight</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, test2.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = get_weight &rArr; keypad_getkey
+</UL>
+<BR>[Calls]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;keypad_getkey
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delayMs
 </UL>
-
-<P><STRONG><a name="[82]"></a>SW1_input</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, test2.o(.text), UNUSED)
-<BR><BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_timer
+<BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[a2]"></a>SW2_input</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, test2.o(.text), UNUSED)
+<P><STRONG><a name="[82]"></a>SW1_input</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, test2.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_timer
+</UL>
 
-<P><STRONG><a name="[89]"></a>SW3_input</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, test2.o(.text))
+<P><STRONG><a name="[89]"></a>SW2_input</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, test2.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[7e]"></a>set_timer</STRONG> (Thumb, 222 bytes, Stack size 32 bytes, test2.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendstring
+<P><STRONG><a name="[a2]"></a>SW3_input</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, test2.o(.text), UNUSED)
+
+<P><STRONG><a name="[7e]"></a>set_timer</STRONG> (Thumb, 222 bytes, Stack size 32 bytes, test2.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = set_timer &rArr; sendstring &rArr; sendchr &rArr; pulse &rArr; writepin
+</UL>
+<BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendstring
 <LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendchr
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendCmd
 <LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SW1_input
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delayMs
 </UL>
+<BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
 
-<P><STRONG><a name="[83]"></a>error</STRONG> (Thumb, 76 bytes, Stack size 8 bytes, test2.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendstring
+<P><STRONG><a name="[83]"></a>error</STRONG> (Thumb, 76 bytes, Stack size 8 bytes, test2.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = error &rArr; moveCursor &rArr; sendCmd &rArr; pulse &rArr; writepin
+</UL>
+<BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendstring
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendCmd
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveCursor
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delayMs
 </UL>
-
-<P><STRONG><a name="[76]"></a>main</STRONG> (Thumb, 78 bytes, Stack size 0 bytes, test2.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = main &rArr; lcdInit &rArr; sendCmd &rArr; pulse &rArr; writepin
+<BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
-<BR>[Calls]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;portInit
+
+<P><STRONG><a name="[76]"></a>main</STRONG> (Thumb, 490 bytes, Stack size 0 bytes, test2.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = main &rArr; set_timer &rArr; sendstring &rArr; sendchr &rArr; pulse &rArr; writepin
+</UL>
+<BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendstring
+<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendchr
+<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendCmd
+<LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;portInit
 <LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdInit
 <LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;keypad_init
+<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;keypad_getkey
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PORTA_Init
-<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SW3_input
+<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;error
+<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_timer
+<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SW2_input
+<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SW1_input
+<LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_weight
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delayMs
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> entry9a.o(.ARM.Collect$$$$0000000B)
@@ -1255,6 +1276,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveCursor
 <LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdInit
+<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;error
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_timer
 </UL>
@@ -1271,20 +1293,26 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[81]"></a>sendchr</STRONG> (Thumb, 34 bytes, Stack size 8 bytes, lcd.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pulse
+<P><STRONG><a name="[81]"></a>sendchr</STRONG> (Thumb, 34 bytes, Stack size 8 bytes, lcd.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = sendchr &rArr; pulse &rArr; writepin
+</UL>
+<BR>[Calls]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pulse
 <LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
 <LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;writeport
 <LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;writepin
 </UL>
 <BR>[Called By]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendstring
+<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_timer
 </UL>
 
-<P><STRONG><a name="[80]"></a>sendstring</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, lcd.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendchr
+<P><STRONG><a name="[80]"></a>sendstring</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, lcd.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = sendstring &rArr; sendchr &rArr; pulse &rArr; writepin
 </UL>
-<BR>[Called By]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;error
+<BR>[Calls]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendchr
+</UL>
+<BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;error
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_timer
 </UL>
 
@@ -1293,8 +1321,10 @@ Global Symbols
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendCmd
 </UL>
 
-<P><STRONG><a name="[84]"></a>moveCursor</STRONG> (Thumb, 48 bytes, Stack size 16 bytes, lcd.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
+<P><STRONG><a name="[84]"></a>moveCursor</STRONG> (Thumb, 48 bytes, Stack size 16 bytes, lcd.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = moveCursor &rArr; sendCmd &rArr; pulse &rArr; writepin
+</UL>
+<BR>[Calls]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendCmd
 </UL>
 <BR>[Called By]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;error
@@ -1306,10 +1336,13 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[7c]"></a>keypad_getkey</STRONG> (Thumb, 230 bytes, Stack size 32 bytes, keypad.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delayUs
+<P><STRONG><a name="[7c]"></a>keypad_getkey</STRONG> (Thumb, 230 bytes, Stack size 32 bytes, keypad.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = keypad_getkey
 </UL>
-<BR>[Called By]<UL><LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_weight
+<BR>[Calls]<UL><LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delayUs
+</UL>
+<BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_weight
 </UL>
 
 <P><STRONG><a name="[88]"></a>PORTA_Init</STRONG> (Thumb, 126 bytes, Stack size 0 bytes, buzzer.o(.text))
