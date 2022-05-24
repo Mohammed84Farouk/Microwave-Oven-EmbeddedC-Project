@@ -33,6 +33,15 @@ void error(void){
     delayMs(1000);
     clear();
 }
+
+unsigned char get_weight(){
+	do{
+		key=keypad_getkey();
+		delayMs(200);   					//wait for the debounce
+	}while(key==0);
+	return key;
+}
+
 void TimeUp(){
 	unsigned char i;
 	setportDIR('f' , 0x0E);
@@ -50,13 +59,6 @@ void TimeUp(){
 		delayMs(500);
 	}
 }	
-unsigned char get_weight(){
-	do{
-		key=keypad_getkey();
-		delayMs(200);   					//wait for the debounce
-	}while(key==0);
-	return key;
-}
 unsigned char SW1_input(void){																					/***********************/
 	return GPIO_PORTF_DATA_R&0x10;
 }
@@ -66,33 +68,41 @@ unsigned char SW2_input(void){																					/***********************/
 unsigned char SW3_input(void){																					/***********************/
 	return GPIO_PORTA_DATA_R&0x08;
 }
+
+uint32_t ii, jj;
 int set_timer(int time){
 	int i, m, s, flag = 0;
 	unsigned char mins, secs, minutes[2], seconds[2];
 	for(i=time; i>=0; i--){
-			sendCmd(1);
-			sendstring(timer);
-			m = i/60;
-			s = i%60;
-			if (m>9) sendchr((unsigned char)('0' + (m/10)));
-			else sendchr('0');
-			sendchr((unsigned char)('0' + (m%10)));
-			sendchr(':');
-			if (s>9) sendchr((unsigned char)('0' + (s/10)));
-			else sendchr('0');
-			sendchr((unsigned char)('0' + (s%10)));
-			delayMs(1000);						//1s
+		sendCmd(1);
+		sendstring(timer);
+        m = i/60;
+		s = i%60;
+		if (m>9) sendchr((unsigned char)('0' + (m/10)));
+		else sendchr('0');
+		sendchr((unsigned char)('0' + (m%10)));
+		sendchr(':');
+		if (s>9) sendchr((unsigned char)('0' + (s/10)));
+		else sendchr('0');
+		sendchr((unsigned char)('0' + (s%10)));
+		delayMs(100);							//0.1s
+		//0.9s
+		for(ii = 0 ; ii < 300; ii++){
 			sw1=SW1_input();					//make it SW3 in the future
 			if(sw1!=0x10){																				
-					sendCmd(1);
-					sendstring("Pausing");
-					while(sw1!=0x01) sw1=SW1_input();
+				sendCmd(1);
+				sendstring("Pausing");
+				sw2=0x01;
+				while(sw2==0x01) sw2=SW2_input();
 			}
+			for(jj = 0; jj < 3180; jj++){}			//1ms
+		}
 	}
 	//timer is done and is now 00:00
 	sendCmd(1);
 	return 0;
 }
+
 int main(){
 	keypad_init();
 	portInit(ctrlport);
@@ -119,61 +129,63 @@ int main(){
             key= keypad_getkey();
 			delayMs(200);   					//wait for the debounce		
 		}while(key==0);
-
-			switch(key){
-              case 'A':	{
-									sendstring(popC);
-                  delayMs(2000);			//wait 2 sec
-									sendCmd(1);
-									sendstring(timer);
-									sendCmd(1);
-									set_timer(60);
-									break;
-							}
-              case 'B':{
-								Beef:
-                  sendCmd(1);
-									sendstring(BeefW);
-									sendCmd(0xC0);
-									w=get_weight();				//first print the number and the clear the lcd
-									sendchr(w);
-									delayMs(2000);
-									sendCmd(1);
-									if(w<'1'||w>'9'){
-											sendstring(err);
-											delayMs(2000);
-											goto Beef;
-									}
-									sendstring(timer);
-									delayMs(1000);
-									state= set_timer((w-'0')*30);
-									if(state==0) goto Idle;			//******************************************redundant
-									break;
-							}
-              case 'C':{
-								Chicken:
-                  sendCmd(1);
-									sendstring(ChickW);
-									sendCmd(0xC0);
-									w=get_weight();				//first print the number and the clear the lcd
-									sendchr(w);
-									delayMs(2000);
-									sendCmd(0xC0);
-									if(w<'1'||w>'9'){
-											sendstring(err);
-											delayMs(2000);
-											goto Chicken;
-									}
-									sendCmd(1);
-									sendstring(timer);
-									delayMs(1000);
-									state= set_timer((w-'0')*12);
-									sendchr(state);
-									if(state==0) goto Idle;			//******************************************redundant
-									break;
-							}
-              case 'D':{
-                  int i;
+		switch(key){
+            case 'A':{
+				sendstring(popC);
+                delayMs(2000);			//wait 2 sec
+				sendCmd(1);
+				sendstring(timer);
+				sendCmd(1);
+				set_timer(3);
+                TimeUp();
+                break;
+            }
+            case 'B':{
+		Beef:
+                sendCmd(1);
+				sendstring(BeefW);
+                sendCmd(0xC0);
+                w=get_weight();				//first print the number and the clear the lcd
+                sendchr(w);
+                delayMs(2000);
+                sendCmd(1);
+                if(w<'1'||w>'9'){
+                    sendstring(err);
+                    delayMs(2000);
+                    goto Beef;
+                }
+                sendstring(timer);
+                delayMs(1000);
+                state= set_timer((w-'0')*30);
+                if(state==0) goto Idle;			//******************************************redundant
+                TimeUp();
+                break;
+            }
+            case 'C':{
+		Chicken:
+                sendCmd(1);
+                sendstring(ChickW);
+                sendCmd(0xC0);
+                w=get_weight();				//first print the number and the clear the lcd
+                sendchr(w);
+                delayMs(2000);
+                sendCmd(0xC0);
+                if(w<'1'||w>'9'){
+                    sendstring(err);
+                    delayMs(2000);
+                    goto Chicken;
+                }
+                sendCmd(1);
+                sendstring(timer);
+                delayMs(1000);
+                state= set_timer((w-'0')*12);
+                sendchr(state);
+                if(state==0) goto Idle;			//******************************************redundant
+                TimeUp();
+                break;
+            }
+            case 'D':{
+                int i;
         cookingTime:
                 clear();
                 writepin('a',2,0);
@@ -273,11 +285,12 @@ int main(){
                 state= set_timer(temp);
                 sendchr(state);
                 if(state==0) goto Idle;			//******************************************redundant
+                TimeUp();
                 break;
             }
-							default:
-									error();
+            default:
+                error();
         }
-	}
+	}	
 	return 0;
 }

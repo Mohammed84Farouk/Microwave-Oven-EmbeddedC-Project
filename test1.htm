@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\test1.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\test1.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Tue May 24 23:24:23 2022
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Wed May 25 00:52:25 2022
 <BR><P>
 <H3>Maximum Stack Usage =         64 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1105,13 +1105,13 @@ Global Symbols
 <P><STRONG><a name="[7e]"></a>delayMs</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, test2.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_timer
-<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_weight
-<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TimeUp
+<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TimeUp
+<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_weight
 <LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;error
 </UL>
 
 <P><STRONG><a name="[9b]"></a>delayUs</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, test2.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;keypad_getkey
+<BR><BR>[Called By]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;keypad_getkey
 </UL>
 
 <P><STRONG><a name="[7b]"></a>error</STRONG> (Thumb, 72 bytes, Stack size 8 bytes, test2.o(.text))
@@ -1125,17 +1125,21 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[80]"></a>TimeUp</STRONG> (Thumb, 126 bytes, Stack size 8 bytes, test2.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;writepin
-<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setportDIR
-<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendstring
-<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delayMs
-</UL>
-
-<P><STRONG><a name="[83]"></a>get_weight</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, test2.o(.text))
+<P><STRONG><a name="[80]"></a>get_weight</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, test2.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = get_weight &rArr; keypad_getkey
 </UL>
-<BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;keypad_getkey
+<BR>[Calls]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;keypad_getkey
+<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delayMs
+</UL>
+<BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[82]"></a>TimeUp</STRONG> (Thumb, 126 bytes, Stack size 8 bytes, test2.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = TimeUp &rArr; sendstring &rArr; sendchr &rArr; pulse &rArr; writepin
+</UL>
+<BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;writepin
+<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setportDIR
+<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendstring
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delayMs
 </UL>
 <BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -1146,48 +1150,51 @@ Global Symbols
 <LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_timer
 </UL>
 
-<P><STRONG><a name="[8d]"></a>SW2_input</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, test2.o(.text))
+<P><STRONG><a name="[89]"></a>SW2_input</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, test2.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_timer
 </UL>
 
 <P><STRONG><a name="[a3]"></a>SW3_input</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, test2.o(.text), UNUSED)
 
-<P><STRONG><a name="[85]"></a>set_timer</STRONG> (Thumb, 222 bytes, Stack size 32 bytes, test2.o(.text))
+<P><STRONG><a name="[85]"></a>set_timer</STRONG> (Thumb, 286 bytes, Stack size 32 bytes, test2.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = set_timer &rArr; sendstring &rArr; sendchr &rArr; pulse &rArr; writepin
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendstring
 <LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendchr
 <LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendCmd
+<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SW2_input
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SW1_input
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delayMs
 </UL>
 <BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[76]"></a>main</STRONG> (Thumb, 1574 bytes, Stack size 0 bytes, test2.o(.text))
+<P><STRONG><a name="[76]"></a>main</STRONG> (Thumb, 1576 bytes, Stack size 0 bytes, test2.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = main &rArr; set_timer &rArr; sendstring &rArr; sendchr &rArr; pulse &rArr; writepin
 </UL>
-<BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;writepin
+<BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;writepin
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendstring
 <LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendchr
 <LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendCmd
-<LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;portInit
+<LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;portInit
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveCursor
-<LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdInit
-<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;keypad_init
-<LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;keypad_getkey
+<LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdInit
+<LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;keypad_init
+<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;keypad_getkey
 <LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear
-<LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PORTA_Init
+<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PORTA_Init
 <LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_timer
-<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SW2_input
+<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SW2_input
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SW1_input
-<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_weight
+<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TimeUp
+<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_weight
 <LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;error
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delayMs
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> entry9a.o(.ARM.Collect$$$$0000000B)
 </UL>
-<P><STRONG><a name="[8a]"></a>portInit</STRONG> (Thumb, 514 bytes, Stack size 0 bytes, io.o(.text))
+<P><STRONG><a name="[8b]"></a>portInit</STRONG> (Thumb, 514 bytes, Stack size 0 bytes, io.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
@@ -1196,15 +1203,15 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buttonInit
 <LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ledInit
-<LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdInit
+<LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdInit
 </UL>
 
-<P><STRONG><a name="[81]"></a>setportDIR</STRONG> (Thumb, 106 bytes, Stack size 0 bytes, io.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdInit
-<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TimeUp
+<P><STRONG><a name="[83]"></a>setportDIR</STRONG> (Thumb, 106 bytes, Stack size 0 bytes, io.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdInit
+<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TimeUp
 </UL>
 
-<P><STRONG><a name="[82]"></a>writepin</STRONG> (Thumb, 442 bytes, Stack size 8 bytes, io.o(.text))
+<P><STRONG><a name="[84]"></a>writepin</STRONG> (Thumb, 442 bytes, Stack size 8 bytes, io.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = writepin
 </UL>
 <BR>[Called By]<UL><LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pulse
@@ -1212,9 +1219,9 @@ Global Symbols
 <LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ledON
 <LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendchr
 <LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendCmd
-<LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdInit
+<LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdInit
 <LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TimeUp
+<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TimeUp
 </UL>
 
 <P><STRONG><a name="[9a]"></a>writeport</STRONG> (Thumb, 94 bytes, Stack size 0 bytes, io.o(.text))
@@ -1241,11 +1248,11 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[90]"></a>ledON</STRONG> (Thumb, 18 bytes, Stack size 12 bytes, io.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;writepin
+<BR><BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;writepin
 </UL>
 
 <P><STRONG><a name="[91]"></a>ledOFF</STRONG> (Thumb, 18 bytes, Stack size 12 bytes, io.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;writepin
+<BR><BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;writepin
 </UL>
 
 <P><STRONG><a name="[92]"></a>buttonInit</STRONG> (Thumb, 26 bytes, Stack size 12 bytes, io.o(.text), UNUSED)
@@ -1271,7 +1278,7 @@ Global Symbols
 <LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendchr
 <LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendCmd
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveCursor
-<LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdInit
+<LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdInit
 <LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear
 </UL>
 
@@ -1285,22 +1292,22 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pulse
 <LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
 <LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;writeport
-<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;writepin
+<LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;writepin
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveCursor
-<LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdInit
+<LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcdInit
 <LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear
 <LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_timer
 </UL>
 
-<P><STRONG><a name="[8b]"></a>lcdInit</STRONG> (Thumb, 94 bytes, Stack size 8 bytes, lcd.o(.text))
+<P><STRONG><a name="[8c]"></a>lcdInit</STRONG> (Thumb, 94 bytes, Stack size 8 bytes, lcd.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = lcdInit &rArr; sendCmd &rArr; pulse &rArr; writepin
 </UL>
 <BR>[Calls]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setpinDIR
-<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;writepin
-<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setportDIR
+<LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;writepin
+<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setportDIR
 <LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendCmd
 </UL>
 <BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -1312,7 +1319,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pulse
 <LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
 <LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;writeport
-<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;writepin
+<LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;writepin
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendstring
 <LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -1326,7 +1333,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_timer
-<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TimeUp
+<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TimeUp
 <LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;error
 </UL>
 
@@ -1352,20 +1359,20 @@ Global Symbols
 
 <P><STRONG><a name="[a7]"></a>enablePClock</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, keypad.o(.text), UNUSED)
 
-<P><STRONG><a name="[89]"></a>keypad_init</STRONG> (Thumb, 130 bytes, Stack size 0 bytes, keypad.o(.text))
+<P><STRONG><a name="[8a]"></a>keypad_init</STRONG> (Thumb, 130 bytes, Stack size 0 bytes, keypad.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[84]"></a>keypad_getkey</STRONG> (Thumb, 230 bytes, Stack size 32 bytes, keypad.o(.text))
+<P><STRONG><a name="[81]"></a>keypad_getkey</STRONG> (Thumb, 230 bytes, Stack size 32 bytes, keypad.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = keypad_getkey
 </UL>
 <BR>[Calls]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delayUs
 </UL>
 <BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_weight
+<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_weight
 </UL>
 
-<P><STRONG><a name="[8c]"></a>PORTA_Init</STRONG> (Thumb, 126 bytes, Stack size 0 bytes, buzzer.o(.text))
+<P><STRONG><a name="[8d]"></a>PORTA_Init</STRONG> (Thumb, 126 bytes, Stack size 0 bytes, buzzer.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
@@ -1390,7 +1397,7 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = pulse &rArr; writepin
 </UL>
 <BR>[Calls]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
-<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;writepin
+<LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;writepin
 </UL>
 <BR>[Called By]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendchr
 <LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendCmd
