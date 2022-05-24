@@ -33,7 +33,23 @@ void error(void){
     delayMs(1000);
     clear();
 }
-
+void TimeUp(){
+	unsigned char i;
+	setportDIR('f' , 0x0E);
+	for(i=0;i<3;i++){
+		sendstring("test ");
+		writepin('f',1,1);
+		writepin('f',2,1);
+		writepin('f',3,1);
+		writepin('a',2,1);
+		delayMs(500);
+		writepin('f',1,0);
+		writepin('f',2,0);
+		writepin('f',3,0);
+		writepin('a',2,0);
+		delayMs(500);
+	}
+}	
 unsigned char get_weight(){
 	do{
 		key=keypad_getkey();
