@@ -156,9 +156,109 @@ int main(){
 									if(state==0) goto Idle;			//******************************************redundant
 									break;
 							}
-              case 'D':
-                  sendchr(key);
-									break;
+              case 'D':{
+                  int i;
+        cookingTime:
+                clear();
+                writepin('a',2,0);
+                sendstring("Cooking Time?");
+                moveCursor(2, 1);
+                delayMs(2000);			//wait 2 sec		
+                for(i = 0; i < 4; i++){
+                    tt[i] = '0';
+                }
+                //sendstring("00:00");
+                do{                          	//to be sure that the user really entered a key.
+                    value= keypad_getkey();
+                    if(value == 'A' || value =='B' ||value =='C' ||value =='D' ||value =='*' ||value =='#' || value > '3'){
+                        writepin('a',2,1);
+                        delayMs(1000);
+                        goto cookingTime;
+                    }
+                    sw1=SW1_input();																								/*******************use SW1 for clearing using keypad****************/
+                    if(sw1!=0x10){																									/*******************use SW1 for clearing using keypad****************/
+                        sendCmd(1);
+                        goto cookingTime;
+                    }
+                    tt[3]= value;
+                    delayMs(200);   					//wait for the debounce
+                }while(tt[3]==0);
+                clear();
+                sendstring("timer: ");
+                sendchr(tt[0]);sendchr(tt[1]);sendchr(':');sendchr(tt[2]);sendchr(tt[3]);
+                tt[2] = tt[3]; 
+                do{                          	//to be sure that the user really entered a key
+                    value= keypad_getkey();
+                    if(value == 'A' || value =='B' ||value =='C' ||value =='D' ||value =='*' ||value =='#'){
+                        writepin('a',2,1);
+                        delayMs(1000);
+                        goto cookingTime;
+                    }
+                    sw1=SW1_input();																								/*******************use SW1 for clearing using keypad****************/
+                    if(sw1!=0x10){																									/*******************use SW1 for clearing using keypad****************/
+                        sendCmd(1);
+                        goto cookingTime;
+                    }
+                    tt[3]= value;
+                    delayMs(200);   					//wait for the debounce
+                }while(tt[3]==0);
+                clear();sendstring("timer: ");
+				sendchr(tt[0]);sendchr(tt[1]);sendchr(':');sendchr(tt[2]);sendchr(tt[3]);
+                tt[1] = tt[2];
+                tt[2] = tt[3];
+                do{                          	//to be sure that the user really entered a key.
+                    value= keypad_getkey();
+                    if(value == 'A' || value =='B' ||value =='C' ||value =='D' ||value =='*' ||value =='#'|| value >'5'){
+                        writepin('a',2,1);
+                        delayMs(1000);
+                        goto cookingTime;
+                    }
+                    sw1=SW1_input();																								/*******************use SW1 for clearing using keypad****************/
+                    if(sw1!=0x10){																									/*******************use SW1 for clearing using keypad****************/
+                        sendCmd(1);
+                        goto cookingTime;
+                    }
+                    tt[3]= value;
+                    delayMs(200);   					//wait for the debounce
+                }while(tt[3]==0);
+                clear();sendstring("timer: ");
+                sendchr(tt[0]);sendchr(tt[1]);sendchr(':');sendchr(tt[2]);sendchr(tt[3]);
+                tt[0] = tt[1];
+                tt[1] = tt[2];
+                tt[2] = tt[3];
+                do{                          	//to be sure that the user really entered a key.
+                    value= keypad_getkey();
+                    if(value == 'A' || value =='B' ||value =='C' ||value =='D' ||value =='*' ||value =='#'){
+                        writepin('a',2,1);
+                        delayMs(1000);
+                        goto cookingTime;
+                    }
+                    sw1=SW1_input();																								/*******************use SW1 for clearing using keypad****************/
+                    if(sw1!=0x10){																									/*******************use SW1 for clearing using keypad****************/
+                        sendCmd(1);
+                        goto cookingTime;
+                    }
+                    tt[3]= value;
+                    delayMs(200);   					//wait for the debounce
+                }while(tt[3]==0);
+                clear();sendstring("timer: ");
+				sendchr(tt[0]);sendchr(tt[1]);sendchr(':');sendchr(tt[2]);sendchr(tt[3]);
+                if(tt[0]=='3'&&(tt[1]>'0'||tt[2]>'0'||tt[3]>'0')){
+                    writepin('a',2,1);
+                    delayMs(1000);
+                    clear();
+                    sendstring("Try again");
+                    delayMs(2000);			//wait 2 sec
+                    goto cookingTime; 
+                }
+								/******************push on switch 2 to start cooking****************************/
+                m1=tt[0]-'0', m0=tt[1]-'0', s1=tt[2]-'0', s0=tt[3]-'0';
+                temp=(m1*10+m0)*60+(s1*10 + s0);
+                state= set_timer(temp);
+                sendchr(state);
+                if(state==0) goto Idle;			//******************************************redundant
+                break;
+            }
 							default:
 									error();
         }
