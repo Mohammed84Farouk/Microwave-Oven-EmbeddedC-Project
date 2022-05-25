@@ -3,11 +3,12 @@
 <pre>
 <h1>µVision Build Log</h1>
 <h2>Project:</h2>
-C:\Users\Dell\Desktop\for clone\Microwave-Oven-EmbeddedC-Project\test1.uvproj
+C:\Users\OWNER\Desktop\Microwave-Oven-EmbeddedC-Project\test1.uvproj
 Project File Date:  05/24/2022
 
 <h2>Output:</h2>
 Build target 'Target 1'
+assembling startup_TM4C123.s...
 compiling test2.c...
 LCD.h(1): warning:  #1295-D: Deprecated declaration lcdInit - give arg types
   void lcdInit ();
@@ -21,28 +22,22 @@ buzzer.h(1): warning:  #1-D: last line of file ends without a newline
   void PORTA_Init();
 buzzer.h(1): warning:  #1295-D: Deprecated declaration PORTA_Init - give arg types
   void PORTA_Init();
-test2.c(74): warning:  #177-D: variable "flag" was declared but never referenced
-        int i, m, s, flag = 0;
-test2.c(75): warning:  #177-D: variable "mins" was declared but never referenced
+test2.c(90): warning:  #177-D: variable "mins" was declared but never referenced
         unsigned char mins, secs, minutes[2], seconds[2];
-test2.c(75): warning:  #177-D: variable "secs" was declared but never referenced
+test2.c(90): warning:  #177-D: variable "secs" was declared but never referenced
         unsigned char mins, secs, minutes[2], seconds[2];
-test2.c(75): warning:  #177-D: variable "minutes" was declared but never referenced
+test2.c(90): warning:  #177-D: variable "minutes" was declared but never referenced
         unsigned char mins, secs, minutes[2], seconds[2];
-test2.c(75): warning:  #177-D: variable "seconds" was declared but never referenced
+test2.c(90): warning:  #177-D: variable "seconds" was declared but never referenced
         unsigned char mins, secs, minutes[2], seconds[2];
-test2.c(295): warning:  #111-D: statement is unreachable
+test2.c(463): warning:  #111-D: statement is unreachable
         return 0;
-test2.c(296): warning:  #1-D: last line of file ends without a newline
+test2.c(464): warning:  #1-D: last line of file ends without a newline
   }
-test2.c: 13 warnings, 0 errors
-linking...
-Program Size: Code=6212 RO-data=668 RW-data=124 ZI-data=516  
-".\test1.axf" - 0 Error(s), 13 Warning(s).
-</pre>
-</body>
-</html>
-) (reg&(1<<bit))>>bit
+test2.c: 12 warnings, 0 errors
+compiling Io.c...
+es.h(4): warning:  #1-D: last line of file ends without a newline
+  #define  readbit(reg,bit) (reg&(1<<bit))>>bit
 Io.c(223): warning:  #111-D: statement is unreachable
                 break;
 Io.c(227): warning:  #111-D: statement is unreachable
@@ -86,5 +81,8 @@ buzzer.c(19): warning:  #1295-D: Deprecated declaration ClosedDoor - give arg ty
   int ClosedDoor();
 buzzer.c: 1 warning, 0 errors
 linking...
-Program Size: Code=6128 RO-data=668 RW-data=116 ZI-data=516  
-".\test1.axf" - 0 Error(s), 32 Warning(s).
+Program Size: Code=7660 RO-data=668 RW-data=128 ZI-data=512  
+".\test1.axf" - 0 Error(s), 31 Warning(s).
+</pre>
+</body>
+</html>

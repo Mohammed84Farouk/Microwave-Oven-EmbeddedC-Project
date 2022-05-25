@@ -251,9 +251,9 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>27</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>278</TopLine>
+      <TopLine>247</TopLine>
       <CurrentLine>273</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\test2.c</PathWithFileName>
