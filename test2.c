@@ -103,18 +103,7 @@ int Pause(){
 			break;
 		}
 	}
-    
     delayMs(500);
-    /*if(flag==0) sendchr('0');
-    else if(flag==1) sendchr('1');
-    else if(flag==2) sendchr('2');
-    else if(flag==-1) sendstring("-1");
-    else sendchr('x');
-    
-    delayMs(1500);
-	clear();
-    sendstring("what will happen");
-    delayMs(1500);*/
     GPIO_PORTF_DATA_R=0x1F;
     return !flag;
 }
