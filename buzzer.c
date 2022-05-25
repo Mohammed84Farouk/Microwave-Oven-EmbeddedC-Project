@@ -16,4 +16,6 @@ void PORTA_Init(){											//Switch3 at PA3, and buzzer at PA2
 	GPIO_PORTA_AFSEL_R &= ~0x0C;        // Regular port function
 }
 
-int ClosedDoor();
+int ClosedDoor(){
+    return (((GPIO_PORTA_DATA_R&0x08)!=0x08)? 1:0);					// returns 1 if i'm pressing sw3(door is closed), 0 otherwise.
+}

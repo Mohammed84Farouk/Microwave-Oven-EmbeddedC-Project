@@ -408,7 +408,7 @@ void delay_ms( unsigned int n)
 {
 	unsigned int i ;
 	systickInit();
-	NVIC_ST_RELOAD_R = 80000 - 1;
+	NVIC_ST_RELOAD_R = 16000 - 1;
 	NVIC_ST_CURRENT_R = 0x00;
 	for(i=0 ; i < n ; i++)
 	while ( readbit(NVIC_ST_CTRL_R ,16) == 0);
@@ -417,7 +417,7 @@ void delay_us( unsigned int n)
 {
 	unsigned int i ;
 	systickInit();
-	NVIC_ST_RELOAD_R = 80 - 1;
+	NVIC_ST_RELOAD_R = 16 - 1;
 	NVIC_ST_CURRENT_R = 0x00;
 	for(i=0 ; i < n ; i++)
 	while ( readbit(NVIC_ST_CTRL_R ,16) == 0);

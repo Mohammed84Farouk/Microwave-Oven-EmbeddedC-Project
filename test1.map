@@ -10,8 +10,8 @@ Section Cross References
     test2.o(.text) refers to lcd.o(.text) for clear
     test2.o(.text) refers to keypad.o(.text) for keypad_getkey
     test2.o(.text) refers to io.o(.text) for setportDIR
+    test2.o(.text) refers to buzzer.o(.text) for ClosedDoor
     test2.o(.text) refers to test2.o(.data) for err
-    test2.o(.text) refers to buzzer.o(.text) for PORTA_Init
     lcd.o(.text) refers to io.o(.text) for writepin
     keypad.o(.text) refers to test2.o(.text) for delayUs
     keypad.o(.text) refers to keypad.o(.constdata) for .constdata
@@ -84,18 +84,18 @@ Image Symbol Table
     .text                                    0x00000280   Section      244  startup_tm4c123.o(.text)
     $v0                                      0x00000280   Number         0  startup_tm4c123.o(.text)
     .text                                    0x00000374   Section        0  test2.o(.text)
-    .text                                    0x00000c0c   Section        0  io.o(.text)
-    .text                                    0x000016e4   Section        0  lcd.o(.text)
-    pulse                                    0x000016e5   Thumb Code    36  lcd.o(.text)
-    .text                                    0x00001800   Section        0  keypad.o(.text)
-    .text                                    0x000019ac   Section        0  buzzer.o(.text)
-    .text                                    0x00001a40   Section       36  init.o(.text)
-    i.__scatterload_copy                     0x00001a64   Section       14  handlers.o(i.__scatterload_copy)
-    i.__scatterload_null                     0x00001a72   Section        2  handlers.o(i.__scatterload_null)
-    i.__scatterload_zeroinit                 0x00001a74   Section       14  handlers.o(i.__scatterload_zeroinit)
-    .constdata                               0x00001a84   Section       16  keypad.o(.constdata)
-    .data                                    0x20000000   Section      128  test2.o(.data)
-    STACK                                    0x20000080   Section      512  startup_tm4c123.o(STACK)
+    .text                                    0x00000db4   Section        0  io.o(.text)
+    .text                                    0x0000188c   Section        0  lcd.o(.text)
+    pulse                                    0x0000188d   Thumb Code    36  lcd.o(.text)
+    .text                                    0x000019a8   Section        0  keypad.o(.text)
+    .text                                    0x00001b54   Section        0  buzzer.o(.text)
+    .text                                    0x00001c00   Section       36  init.o(.text)
+    i.__scatterload_copy                     0x00001c24   Section       14  handlers.o(i.__scatterload_copy)
+    i.__scatterload_null                     0x00001c32   Section        2  handlers.o(i.__scatterload_null)
+    i.__scatterload_zeroinit                 0x00001c34   Section       14  handlers.o(i.__scatterload_zeroinit)
+    .constdata                               0x00001c44   Section       16  keypad.o(.constdata)
+    .data                                    0x20000000   Section      116  test2.o(.data)
+    STACK                                    0x20000078   Section      512  startup_tm4c123.o(STACK)
 
     Global Symbols
 
@@ -247,47 +247,49 @@ Image Symbol Table
     SW1_input                                0x0000048b   Thumb Code    10  test2.o(.text)
     SW2_input                                0x00000495   Thumb Code    10  test2.o(.text)
     SW3_input                                0x0000049f   Thumb Code    10  test2.o(.text)
-    Pause                                    0x000004a9   Thumb Code    74  test2.o(.text)
-    set_timer                                0x000004f3   Thumb Code   264  test2.o(.text)
-    PopCorn                                  0x000005fb   Thumb Code    56  test2.o(.text)
-    Animal                                   0x00000633   Thumb Code   270  test2.o(.text)
-    SpecialTiming                            0x00000741   Thumb Code  1058  test2.o(.text)
-    main                                     0x00000b63   Thumb Code   106  test2.o(.text)
-    portInit                                 0x00000c0d   Thumb Code   514  io.o(.text)
-    setpinDIR                                0x00000e0f   Thumb Code   336  io.o(.text)
-    setportDIR                               0x00000f5f   Thumb Code   106  io.o(.text)
-    writepin                                 0x00000fc9   Thumb Code   442  io.o(.text)
-    writeport                                0x00001183   Thumb Code    94  io.o(.text)
-    readpin                                  0x000011e1   Thumb Code   206  io.o(.text)
-    readport                                 0x000012af   Thumb Code   110  io.o(.text)
-    pullup_enable                            0x0000131d   Thumb Code   154  io.o(.text)
-    write_low                                0x000013b7   Thumb Code   310  io.o(.text)
-    write_high                               0x000014ed   Thumb Code   240  io.o(.text)
-    ledInit                                  0x000015dd   Thumb Code    18  io.o(.text)
-    ledON                                    0x000015ef   Thumb Code    18  io.o(.text)
-    ledOFF                                   0x00001601   Thumb Code    18  io.o(.text)
-    buttonInit                               0x00001613   Thumb Code    26  io.o(.text)
-    buttonRead                               0x0000162d   Thumb Code    16  io.o(.text)
-    systickInit                              0x0000163d   Thumb Code    24  io.o(.text)
-    delay_ms                                 0x00001655   Thumb Code    48  io.o(.text)
-    delay_us                                 0x00001685   Thumb Code    48  io.o(.text)
-    sendCmd                                  0x00001709   Thumb Code    34  lcd.o(.text)
-    lcdInit                                  0x0000172b   Thumb Code    94  lcd.o(.text)
-    sendchr                                  0x00001789   Thumb Code    34  lcd.o(.text)
-    sendstring                               0x000017ab   Thumb Code    22  lcd.o(.text)
-    clear                                    0x000017c1   Thumb Code    16  lcd.o(.text)
-    moveCursor                               0x000017d1   Thumb Code    48  lcd.o(.text)
-    enablePClock                             0x00001801   Thumb Code    32  keypad.o(.text)
-    keypad_init                              0x00001821   Thumb Code   130  keypad.o(.text)
-    keypad_getkey                            0x000018a3   Thumb Code   230  keypad.o(.text)
-    PORTA_Init                               0x000019ad   Thumb Code   126  buzzer.o(.text)
-    __scatterload                            0x00001a41   Thumb Code    28  init.o(.text)
-    __scatterload_rt2                        0x00001a41   Thumb Code     0  init.o(.text)
-    __scatterload_copy                       0x00001a65   Thumb Code    14  handlers.o(i.__scatterload_copy)
-    __scatterload_null                       0x00001a73   Thumb Code     2  handlers.o(i.__scatterload_null)
-    __scatterload_zeroinit                   0x00001a75   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
-    Region$$Table$$Base                      0x00001a94   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x00001ab4   Number         0  anon$$obj.o(Region$$Table)
+    toggle                                   0x000004a9   Thumb Code    16  test2.o(.text)
+    Pause                                    0x000004b9   Thumb Code   242  test2.o(.text)
+    set_timer                                0x000005ab   Thumb Code   286  test2.o(.text)
+    PopCorn                                  0x000006c9   Thumb Code    90  test2.o(.text)
+    Animal                                   0x00000723   Thumb Code   456  test2.o(.text)
+    SpecialTiming                            0x000008eb   Thumb Code  1056  test2.o(.text)
+    main                                     0x00000d0b   Thumb Code   124  test2.o(.text)
+    portInit                                 0x00000db5   Thumb Code   514  io.o(.text)
+    setpinDIR                                0x00000fb7   Thumb Code   336  io.o(.text)
+    setportDIR                               0x00001107   Thumb Code   106  io.o(.text)
+    writepin                                 0x00001171   Thumb Code   442  io.o(.text)
+    writeport                                0x0000132b   Thumb Code    94  io.o(.text)
+    readpin                                  0x00001389   Thumb Code   206  io.o(.text)
+    readport                                 0x00001457   Thumb Code   110  io.o(.text)
+    pullup_enable                            0x000014c5   Thumb Code   154  io.o(.text)
+    write_low                                0x0000155f   Thumb Code   310  io.o(.text)
+    write_high                               0x00001695   Thumb Code   240  io.o(.text)
+    ledInit                                  0x00001785   Thumb Code    18  io.o(.text)
+    ledON                                    0x00001797   Thumb Code    18  io.o(.text)
+    ledOFF                                   0x000017a9   Thumb Code    18  io.o(.text)
+    buttonInit                               0x000017bb   Thumb Code    26  io.o(.text)
+    buttonRead                               0x000017d5   Thumb Code    16  io.o(.text)
+    systickInit                              0x000017e5   Thumb Code    24  io.o(.text)
+    delay_ms                                 0x000017fd   Thumb Code    50  io.o(.text)
+    delay_us                                 0x0000182f   Thumb Code    48  io.o(.text)
+    sendCmd                                  0x000018b1   Thumb Code    34  lcd.o(.text)
+    lcdInit                                  0x000018d3   Thumb Code    94  lcd.o(.text)
+    sendchr                                  0x00001931   Thumb Code    34  lcd.o(.text)
+    sendstring                               0x00001953   Thumb Code    22  lcd.o(.text)
+    clear                                    0x00001969   Thumb Code    16  lcd.o(.text)
+    moveCursor                               0x00001979   Thumb Code    48  lcd.o(.text)
+    enablePClock                             0x000019a9   Thumb Code    32  keypad.o(.text)
+    keypad_init                              0x000019c9   Thumb Code   130  keypad.o(.text)
+    keypad_getkey                            0x00001a4b   Thumb Code   230  keypad.o(.text)
+    PORTA_Init                               0x00001b55   Thumb Code   126  buzzer.o(.text)
+    ClosedDoor                               0x00001bd3   Thumb Code    20  buzzer.o(.text)
+    __scatterload                            0x00001c01   Thumb Code    28  init.o(.text)
+    __scatterload_rt2                        0x00001c01   Thumb Code     0  init.o(.text)
+    __scatterload_copy                       0x00001c25   Thumb Code    14  handlers.o(i.__scatterload_copy)
+    __scatterload_null                       0x00001c33   Thumb Code     2  handlers.o(i.__scatterload_null)
+    __scatterload_zeroinit                   0x00001c35   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
+    Region$$Table$$Base                      0x00001c54   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x00001c74   Number         0  anon$$obj.o(Region$$Table)
     idle                                     0x20000000   Data          16  test2.o(.data)
     clearing                                 0x20000010   Data          12  test2.o(.data)
     ChickW                                   0x2000001c   Data          17  test2.o(.data)
@@ -308,10 +310,7 @@ Image Symbol Table
     s1                                       0x20000068   Data           4  test2.o(.data)
     s0                                       0x2000006c   Data           4  test2.o(.data)
     temp                                     0x20000070   Data           4  test2.o(.data)
-    ii                                       0x20000074   Data           4  test2.o(.data)
-    jj                                       0x20000078   Data           4  test2.o(.data)
-    idx                                      0x2000007c   Data           4  test2.o(.data)
-    __initial_sp                             0x20000280   Data           0  startup_tm4c123.o(STACK)
+    __initial_sp                             0x20000278   Data           0  startup_tm4c123.o(STACK)
 
 
 
@@ -321,9 +320,9 @@ Memory Map of the image
 
   Image Entry point : 0x00000281
 
-  Load Region LR_1 (Base: 0x00000000, Size: 0x00001b34, Max: 0xffffffff, ABSOLUTE)
+  Load Region LR_1 (Base: 0x00000000, Size: 0x00001ce8, Max: 0xffffffff, ABSOLUTE)
 
-    Execution Region ER_RO (Base: 0x00000000, Size: 0x00001ab4, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RO (Base: 0x00000000, Size: 0x00001c74, Max: 0xffffffff, ABSOLUTE)
 
     Base Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -338,32 +337,33 @@ Memory Map of the image
     0x0000027c   0x00000000   Code   RO          102    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
     0x0000027c   0x00000004   Code   RO           91    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
     0x00000280   0x000000f4   Code   RO            4  * .text               startup_tm4c123.o
-    0x00000374   0x00000898   Code   RO           10    .text               test2.o
-    0x00000c0c   0x00000ad8   Code   RO           35    .text               io.o
-    0x000016e4   0x0000011c   Code   RO           50    .text               lcd.o
-    0x00001800   0x000001ac   Code   RO           62    .text               keypad.o
-    0x000019ac   0x00000094   Code   RO           75    .text               buzzer.o
-    0x00001a40   0x00000024   Code   RO          104    .text               mc_w.l(init.o)
-    0x00001a64   0x0000000e   Code   RO          108    i.__scatterload_copy  mc_w.l(handlers.o)
-    0x00001a72   0x00000002   Code   RO          109    i.__scatterload_null  mc_w.l(handlers.o)
-    0x00001a74   0x0000000e   Code   RO          110    i.__scatterload_zeroinit  mc_w.l(handlers.o)
-    0x00001a82   0x00000002   PAD
-    0x00001a84   0x00000010   Data   RO           63    .constdata          keypad.o
-    0x00001a94   0x00000020   Data   RO          106    Region$$Table       anon$$obj.o
+    0x00000374   0x00000a40   Code   RO           10    .text               test2.o
+    0x00000db4   0x00000ad8   Code   RO           35    .text               io.o
+    0x0000188c   0x0000011c   Code   RO           50    .text               lcd.o
+    0x000019a8   0x000001ac   Code   RO           62    .text               keypad.o
+    0x00001b54   0x000000ac   Code   RO           75    .text               buzzer.o
+    0x00001c00   0x00000024   Code   RO          104    .text               mc_w.l(init.o)
+    0x00001c24   0x0000000e   Code   RO          108    i.__scatterload_copy  mc_w.l(handlers.o)
+    0x00001c32   0x00000002   Code   RO          109    i.__scatterload_null  mc_w.l(handlers.o)
+    0x00001c34   0x0000000e   Code   RO          110    i.__scatterload_zeroinit  mc_w.l(handlers.o)
+    0x00001c42   0x00000002   PAD
+    0x00001c44   0x00000010   Data   RO           63    .constdata          keypad.o
+    0x00001c54   0x00000020   Data   RO          106    Region$$Table       anon$$obj.o
 
 
-    Execution Region ER_RW (Base: 0x20000000, Size: 0x00000080, Max: 0xffffffff, ABSOLUTE)
-
-    Base Addr    Size         Type   Attr      Idx    E Section Name        Object
-
-    0x20000000   0x00000080   Data   RW           11    .data               test2.o
-
-
-    Execution Region ER_ZI (Base: 0x20000080, Size: 0x00000200, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RW (Base: 0x20000000, Size: 0x00000074, Max: 0xffffffff, ABSOLUTE)
 
     Base Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000080   0x00000200   Zero   RW            1    STACK               startup_tm4c123.o
+    0x20000000   0x00000074   Data   RW           11    .data               test2.o
+
+
+    Execution Region ER_ZI (Base: 0x20000074, Size: 0x00000204, Max: 0xffffffff, ABSOLUTE)
+
+    Base Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x20000074   0x00000004   PAD
+    0x20000078   0x00000200   Zero   RW            1    STACK               startup_tm4c123.o
 
 
 ==============================================================================
@@ -373,17 +373,17 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-       148         22          0          0          0        553   buzzer.o
-      2776        304          0          0          0       4800   io.o
-       428         36         16          0          0       1385   keypad.o
-       284          0          0          0          0       1490   lcd.o
-       244          6        620          0        512       5484   startup_tm4c123.o
-      2200        172          0        128          0       9874   test2.o
+       172         26          0          0          0        720   buzzer.o
+      2776        302          0          0          0       4716   io.o
+       428         36         16          0          0       1301   keypad.o
+       284          0          0          0          0       1406   lcd.o
+       244          6        620          0        512       5400   startup_tm4c123.o
+      2624        230          0        116          0      10075   test2.o
 
     ----------------------------------------------------------------------
-      6080        540        668        128        512      23586   Object Totals
+      6528        600        668        116        516      23618   Object Totals
          0          0         32          0          0          0   (incl. Generated)
-         0          0          0          0          0          0   (incl. Padding)
+         0          0          0          0          4          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
@@ -420,15 +420,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      6168        556        668        128        512      23154   Grand Totals
-      6168        556        668        128        512      23154   ELF Image Totals
-      6168        556        668        128          0          0   ROM Totals
+      6616        616        668        116        516      22986   Grand Totals
+      6616        616        668        116        516      22986   ELF Image Totals
+      6616        616        668        116          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                 6836 (   6.68kB)
-    Total RW  Size (RW Data + ZI Data)               640 (   0.63kB)
-    Total ROM Size (Code + RO Data + RW Data)       6964 (   6.80kB)
+    Total RO  Size (Code + RO Data)                 7284 (   7.11kB)
+    Total RW  Size (RW Data + ZI Data)               632 (   0.62kB)
+    Total ROM Size (Code + RO Data + RW Data)       7400 (   7.23kB)
 
 ==============================================================================
 

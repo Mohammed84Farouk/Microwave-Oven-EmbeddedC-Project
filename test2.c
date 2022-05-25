@@ -5,12 +5,12 @@
 #include "lcdDef.h"
 #include "keypad.h"
 #include "buzzer.h"
- 
+
 unsigned char sw1, sw2, sw3, w, tt[4], value;
 char idle[]="Choose from A-D", clearing[]="Clearing...", ChickW[]="Chicken Weight? ", BeefW[]="Beef Weight? ", err[]="Err", timer[]="Timer: ", popC[]="PopCorn";																												/**********************/
 uint8_t key;      								//to recieve the returned character
 int state, m1, m0, s1, s0, temp;
- 
+
 void delayMs(uint32_t n) {				/* delay n milliseconds (16 MHz CPU clock) */
 	uint32_t i, j;
 	for(i = 0 ; i < n; i++)
@@ -61,7 +61,7 @@ int TimeUp(){
 	delayMs(500);
 	return 1;
 }
- 
+
 unsigned char SW1_input(void){																					/***********************/
 	return GPIO_PORTF_DATA_R&0x10;
 }
@@ -71,22 +71,59 @@ unsigned char SW2_input(void){																					/***********************/
 unsigned char SW3_input(void){																					/***********************/
 	return GPIO_PORTA_DATA_R&0x08;
 }
-int Pause(){                           //returns 1 to resume, 0 to reset;
-    clear();                            //remove that line
-    sendstring("Pausing");              //remove that line
-    sw2=0x01, sw1= 0x10;
-	while(sw2==0x01&&sw1==0x10){
-        sw2=SW2_input();
-        sw1=SW1_input();
-    }
-    if(sw2!=0x01) return 1;             //resume 
-    return 0;                           //reset
-    
+void toggle(){
+	GPIO_PORTF_DATA_R^=0x0E;
 }
-uint32_t ii, jj;
+
+int Pause(){
+    uint32_t ix, jx, flag=-1;
+	delayMs(500);
+	sw1=0x10, sw2=0x01, sw3=0x08;
+	while(sw2==0x01||sw3==0x08){
+		toggle();
+		sw2=SW2_input();
+		sw3=SW3_input();
+        delayMs(1);
+		for(ix = 0 ; ix < 318 && (sw2==0x01 || sw3==0x08) && sw1 == 0x10; ix++){	////while sw2 or sw3 are open
+			sw1=SW1_input();
+			sw2=SW2_input();
+            sw3=SW3_input();
+			delayMs(1);
+			if(sw2!=0x01 && sw3!=0x08){flag=2;/*sendstring("sw2");delayMs(1000);*/}
+			else if(sw1!=0x10){	//if sw1 is pushed then return 0 to go back to idle state
+				moveCursor(2, 1);
+                sendstring("reset...");
+                flag=1;//sendstring("sw1");delayMs(1000);
+            }
+		}
+		delayMs(1);
+		if(flag==1){sw2=0, sw3=0;break;}    //sw1 is pushed to reset (idle)
+		else if(flag==2){	            	//resume
+			flag=0;
+			break;
+		}
+	}
+    
+    delayMs(500);
+    /*if(flag==0) sendchr('0');
+    else if(flag==1) sendchr('1');
+    else if(flag==2) sendchr('2');
+    else if(flag==-1) sendstring("-1");
+    else sendchr('x');
+    
+    delayMs(1500);
+	clear();
+    sendstring("what will happen");
+    delayMs(1500);*/
+    GPIO_PORTF_DATA_R=0x1F;
+    return !flag;
+}
+
 int set_timer(int time){
-	int i, m, s, flag = -1;
+    uint32_t ii, jj;
+	int i, m, s, flag = -1, check=-1;
 	unsigned char mins, secs, minutes[2], seconds[2];
+    GPIO_PORTF_DATA_R=0x1F;
 	for(i=time; i>=0; i--){
 		clear();
 		sendstring(timer);
@@ -100,28 +137,33 @@ int set_timer(int time){
 		else sendchr('0');
 		sendchr((unsigned char)('0' + (s%10)));
 		delayMs(100);							//0.1s
-		for(ii = 0 ; ii < 300; ii++){           //0.9s the rest of the second for counting down
-			sw1=SW1_input();					//make it SW3 in the future
-			if(sw1!=0x10){
-				flag = Pause();
-                if(!flag){
-                    clear();
-                    return 0;
-                }
-			}
-			for(jj = 0; jj < 3180; jj++){}			//1ms
+		sw1=0x10, sw3= 0x00;
+        for(ii = 0 ; ii < 900; ii++){           //0.9s the rest of the second for counting down
+            sw1=SW1_input();
+			sw3=SW3_input();
+			delayMs(1);			//1ms
+			if(sw1!=0x10||sw3==0x08) check=Pause();     //door is opend or sw1 is pressed
 		}
+        if(check==0){
+            clear();
+            sendstring("insideCheck==0");
+            flag=0;		//check = 0 when we push sw1 go to idle
+            break;
+        }
 	}
 	//timer is done and is now 00:00
 	clear();
-	return 1;
+    GPIO_PORTF_DATA_R&=0x11;
+	return flag;
 }
 int PopCorn(){
     sendstring(popC);
-    delayMs(2000);			//wait 2 sec
+    delayMs(1500);			//wait 2 sec
 	clear();
+    sendstring("close door&start");
+	sw2=0x01;
+	while(!(ClosedDoor()&&sw2!=0x01)) sw2=SW2_input();
 	sendstring(timer);
-	clear();
     state= set_timer(60);
     if(state==0) return 0;			//to go to Idle
     return TimeUp();
@@ -142,6 +184,9 @@ int Animal(char c){
                 goto Chicken;
             }
             clear();
+            sendstring("close door&start");
+            sw2=0x01;
+            while(!(ClosedDoor()&&sw2!=0x01)) sw2=SW2_input();
             sendstring(timer);
             delayMs(1000);
             state= set_timer((w-'0')*12);
@@ -162,6 +207,9 @@ int Animal(char c){
                 delayMs(2000);
                 goto Beef;
             }
+            sendstring("close door&start");
+            sw2=0x01;
+            while(!(ClosedDoor()&&sw2!=0x01)) sw2=SW2_input();
             sendstring(timer);
             delayMs(1000);
             state= set_timer((w-'0')*30);
@@ -169,25 +217,25 @@ int Animal(char c){
             return TimeUp();
     }
 }
-int idx;
 int SpecialTiming(){
+        int idx;
     cookingTime:
         clear();
         writepin('a',2,0);                  //buzzer is turned off
-        for(idx = 0; idx < 4; idx++) tt[idx] = (idx>1? 'm':'s');
+        for(idx = 0; idx < 4; idx++) tt[idx] = (idx>1? 's':'m');
         sendstring("Cooking Time?");
         moveCursor(2, 1);
         sendstring("mm:ss");
-        delayMs(2000);			//wait 2 se$
-        do{                          	//to be sure that the user really entered a key.
+        delayMs(2000);			            //wait 2 seconds
+        do{                          	    //to be sure that the user really entered a key.
             value= keypad_getkey();
             if((value >= 'A' && value <= 'D') ||value =='*' ||value =='#' || value > '3'){
                 writepin('a',2,1);
                 delayMs(1000);
                 goto cookingTime;
             }
-            sw1=SW1_input();																								/*******************use SW1 for clearing using keypad****************/
-            if(sw1!=0x10){																									/*******************use SW1 for clearing using keypad****************/
+            sw1=SW1_input();
+            if(sw1!=0x10){
                 clear();
                 goto cookingTime;
             }
@@ -262,14 +310,17 @@ int SpecialTiming(){
             delayMs(2000);			//wait 2 sec
             goto cookingTime; 
         }
-        /******************push on switch 2 to start cooking****************************/
+        delayMs(1000);
+        clear();
+        sendstring("close door&start");
+        sw2=0x01;
+        while(!(ClosedDoor()&&sw2!=0x01)) sw2=SW2_input();          //push on switch 2 to start cooking
         m1=tt[0]-'0', m0=tt[1]-'0', s1=tt[2]-'0', s0=tt[3]-'0';
         temp=(m1*10+m0)*60+(s1*10 + s0);
         state= set_timer(temp);
         if(state==0) return 0;			//to go to Idle
         return TimeUp();
 }
-
 int main(){
 	keypad_init();
 	portInit(ctrlport);
@@ -279,7 +330,10 @@ int main(){
 	PORTA_Init();
 	while (1){
     Idle:
+        clear();
+        GPIO_PORTF_DATA_R=0x11;
         sendstring(idle);
+        moveCursor(2, 1);
 		key=reading();
         switch(key){
             case 'A':
@@ -291,7 +345,7 @@ int main(){
             case 'C':
                 Animal('C');
                 break;
-            case 'D':                 //7asbya allah wane3m al wakil.
+            case 'D':
                 SpecialTiming();
                 break;
             default:
