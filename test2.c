@@ -5,12 +5,12 @@
 #include "lcdDef.h"
 #include "keypad.h"
 #include "buzzer.h"
-
+ 
 unsigned char sw1, sw2, sw3, w, tt[4], value;
 char idle[]="Choose from A-D", clearing[]="Clearing...", ChickW[]="Chicken Weight? ", BeefW[]="Beef Weight? ", err[]="Err", timer[]="Timer: ", popC[]="PopCorn";																												/**********************/
 uint8_t key;      								//to recieve the returned character
 int state, m1, m0, s1, s0, temp;
-
+ 
 void delayMs(uint32_t n) {				/* delay n milliseconds (16 MHz CPU clock) */
 	uint32_t i, j;
 	for(i = 0 ; i < n; i++)
@@ -44,25 +44,24 @@ unsigned char reading(){
 unsigned char get_weight(){
 	return reading();
 }
-
 int TimeUp(){
-	unsigned char i;
+    int i, j;
+    clear(); 
 	setportDIR('f' , 0x0E);
+	sendstring("Done");
 	for(i=0;i<3;i++){
-		sendstring("test ");
-		writepin('f',1,1);
-		writepin('f',2,1);
-		writepin('f',3,1);
+		sendchr('.');
+		for(j=1; j<=3; j++)	writepin('f',j,1);
 		writepin('a',2,1);
 		delayMs(500);
-		writepin('f',1,0);
-		writepin('f',2,0);
-		writepin('f',3,0);
+		for(j=1; j<=3; j++) writepin('f',j,0);
 		writepin('a',2,0);
 		delayMs(500);
 	}
-    return 1;
-}	
+	delayMs(500);
+	return 1;
+}
+ 
 unsigned char SW1_input(void){																					/***********************/
 	return GPIO_PORTF_DATA_R&0x10;
 }
